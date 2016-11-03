@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<prerequisites>
+		<maven>3.0.4</maven>
+	</prerequisites>
+
+	<groupId>com.elecomte.ci</groupId>
+	<artifactId>ci-look-services</artifactId>
+	<packaging>jar</packaging>
+
+	<name>ci-look</name>
+	<description><![CDATA[ CI data simple holder ]]></description>
+	<inceptionYear>2016</inceptionYear>
+
+	<version>0.1.0-SNAPSHOT</version>
+
+
+	<properties>
+
+		<!-- Commons -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<app.build.timestamp>${maven.build.timestamp}</app.build.timestamp>
+		<app.build.stamp><![CDATA[Build of ${project.artifactId} Version ${project.version} - ${app.build.timestamp}]]></app.build.stamp>
+
+		<!-- Dependency mgmt Versions -->
+		<dependency.spring-boot.version>1.3.5.RELEASE</dependency.spring-boot.version>
+		<dependency.logback-classic.version>1.1.2</dependency.logback-classic.version>
+		<dependency.jcl-over-slf4j.version>1.7.10</dependency.jcl-over-slf4j.version>
+		<dependency.junit.version>4.12</dependency.junit.version>
+		<dependency.hibernate-entitymanager.version>4.2.8.Final</dependency.hibernate-entitymanager.version>
+		<dependency.hibernate-validator.version>5.1.3.Final</dependency.hibernate-validator.version>
+		<dependency.jackson-mapper.version>1.8.5</dependency.jackson-mapper.version>
+		<dependency.jackson-dataformat.version>2.6.6</dependency.jackson-dataformat.version>
+		<dependency.jackson-datatype.version>2.6.6</dependency.jackson-datatype.version>
+		<dependency.jjwt.version>0.6.0</dependency.jjwt.version>
+		<dependency.springfox-swagger.version>2.5.0</dependency.springfox-swagger.version>
+		<dependency.classmate.version>1.3.1</dependency.classmate.version>
+		<dependency.h2.version>1.4.185</dependency.h2.version>
+		<dependency.jsemver.version>0.9.0</dependency.jsemver.version>
+
+		<!-- Plugins versions -->
+		<plugin.spring-boot.version>${dependency.spring-boot.version}</plugin.spring-boot.version>
+	</properties>
+
+
+	<!-- ++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ++ PROJECT COMMENTS ON ORGANIZATION ++ -->
+	<!-- ++++++++++++++++++++++++++++++++++++++ -->
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<distribution>TODO </distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>elecomte</name>
+		<url>www.elecomte.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>1</id>
+			<name>Emmanuel Lecomte</name>
+			<email>pro@elecomte.com</email>
+			<timezone>1</timezone>
+			<properties>
+				<picUrl>http://www.gravatar.com/avatar/28aaea65e6b0835950eeb4422569783e.png</picUrl>
+			</properties>
+		</developer>
+	</developers>
+
+	<build>
+
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${plugin.spring-boot.version}</version>
+				<configuration>
+					<mainClass>com.elecomte.ci.look.Service</mainClass>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+		<!-- Filter local resources -->
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<!-- Filter local resources -->
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+
+	</build>
+
+
+	<dependencies>
+
+		<!-- Import dependency management from Spring Boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-dependencies</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+
+		<!-- Spring-boot Starter kit : root -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+		</dependency>
+
+		<!-- Spring-boot Starter kit : for test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Junit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${dependency.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Spring-boot Starter kit : webapp -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+		</dependency>
+
+		<!-- Spring-boot Starter kit : embedded jetty -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+		</dependency>
+
+		<!-- JSON content mapper -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${dependency.jackson-mapper.version}</version>
+		</dependency>
+
+		<!-- Jackson data format for XML Mapping -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>${dependency.jackson-dataformat.version}</version>
+		</dependency>
+
+		<!-- Correct JSR310 (localdate) mapping with jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${dependency.jackson-datatype.version}</version>
+		</dependency>
+
+		<!-- Spring-boot Starter kit : jpa support (includes Hibernate) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${dependency.spring-boot.version}</version>
+		</dependency>
+
+		<!-- H2 for quick database test -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${dependency.h2.version}</version>
+		</dependency>
+
+		<!-- Hibernate validator used for bean validation (JSR 303/349 validation) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${dependency.hibernate-validator.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Swagger support -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${dependency.springfox-swagger.version}</version>
+		</dependency>
+
+		<!-- Swagger ui -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${dependency.springfox-swagger.version}</version>
+		</dependency>
+
+		<!-- Fix on https://github.com/springfox/springfox/issues/948 -->
+		<dependency>
+			<groupId>com.fasterxml</groupId>
+			<artifactId>classmate</artifactId>
+			<version>${dependency.classmate.version}</version>
+		</dependency>
+
+		<!-- JWT for auth token MGMT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${dependency.jjwt.version}</version>
+		</dependency>
+
+		<!-- Semver check -->
+		<dependency>
+			<groupId>com.github.zafarkhaja</groupId>
+			<artifactId>java-semver</artifactId>
+			<version>${dependency.jsemver.version}</version>
+		</dependency>
+	</dependencies>
+
+
+	<repositories>
+
+		<!-- Extension to default : Spring RELEASE distribution for dependencies -->
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+
+		<!-- Overhide default : maven standard repository clone -->
+		<repository>
+			<id>org.jboss.repository.releases</id>
+			<name>JBoss Maven Release Repository</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+		</repository>
+
+	</repositories>
+
+
+	<pluginRepositories>
+
+		<!-- Extension to default : Spring RELEASE distribution for plugins -->
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+
+	</pluginRepositories>
+
+</project>

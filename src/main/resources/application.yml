@@ -1,0 +1,18 @@
+ci-look: 
+    badges:
+        logo.height: 230
+        logo.width: 230
+        logo.type: PNG
+        
+spring:   
+    profiles:
+        active: h2console,swagger
+       
+    datasource:
+        url: jdbc:h2:~\h2;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password: i'sE2rtPiUKtT
+        driver-class-name: org.h2.Driver
+       
+    jpa:
+        show-sql: false
