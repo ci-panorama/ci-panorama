@@ -10,8 +10,8 @@
  * Includes a CLI, an UI, a REST API. No security (Work in progress ...)
 
 ## Examples of Badges :
- * Last build of a project : ![Build](https://raw.githubusercontent.com/elecomte-pro/ci-look/master/docs/build-success.svg?raw=true "Build") or ![Build](https://raw.githubusercontent.com/elecomte-pro/ci-look/master/docs/build-failed.svg?raw=true "Build")
- * Versions of a project : ![Specified version](docs/version-num.svg?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.svg?raw=true "Pending version") or ![Released version](docs/version-released.svg?raw=true "Released version")
+ * Last build of a project : ![Build](docs/build-success.png?raw=true "Build") or ![Build](docs/build-failed.png?raw=true "Build")
+ * Versions of a project : ![Specified version](docs/version-num.png?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.png?raw=true "Pending version") or ![Released version](docs/version-released.png?raw=true "Released version")
  * **TODO : more to come, this project is currently work in progress**
 
 ## What it CI-LOOK ?
@@ -231,9 +231,9 @@ All the badges are SVG files generated from a project identifier (using project 
 **get /badges/{projectCode}/{projectVersion}/build.svg** => most recent build result status for specified project version. "Pending" if none found, "success" if result was "success", "failed" else
 
 **Results :** 
- * *Last build was successful* : ![Build](docs/build-success.svg?raw=true "Build")
- * *Last build was failed* : ![Build](docs/build-failed.svg?raw=true "Build")
- * *No build found for specified project* : ![Build](docs/build-pending.svg?raw=true "Build")
+ * *Last build was successful* : ![Build](docs/build-success.png?raw=true "Build")
+ * *Last build was failed* : ![Build](docs/build-failed.png?raw=true "Build")
+ * *No build found for specified project* : ![Build](docs/build-pending.png?raw=true "Build")
  
 ### Version - Last version number
 For these 3 badges variants, only the fixed semver compliant version is displayed. So if the last "released" if for example "1.3.2.RC", then "1.3.2" is displayed.
@@ -241,19 +241,19 @@ For these 3 badges variants, only the fixed semver compliant version is displaye
 **get /badges/{projectCode}/{projectVersion}/version.svg** => Corresponding version for project, in a "version" badge. N/A if version is not found. 
 
 **Results :** 
- * *Specified version exists* : ![Specified version](docs/version-num.svg?raw=true "Specified version")
+ * *Specified version exists* : ![Specified version](docs/version-num.png?raw=true "Specified version")
  * *Specified version doesn't exists* : same with "N/A" value on red background
  
 **get /badges/{projectCode}/pending/version.svg** => Fresh pending version for the project, in a dedicated "pending" badge. N/A if version is not found.
 
 **Results :** 
- * *A pending version exists* : ![Pending version](docs/version-pending.svg?raw=true "Pending version")
+ * *A pending version exists* : ![Pending version](docs/version-pending.png?raw=true "Pending version")
  * *No pending version exists (for example, they are all released)* : same with "N/A" value on red background
 
 **get /badges/{projectCode}/released/version.svg** => Fresh released version for the project, in a dedicated "released" badge. N/A if version is not found.
 
 **Results :** 
- * *A released version exists* : ![Released version](docs/version-released.svg?raw=true "Released version")
+ * *A released version exists* : ![Released version](docs/version-released.png?raw=true "Released version")
  * *No released version exists* : same with "N/A" value on red background
 
 ### Tool
