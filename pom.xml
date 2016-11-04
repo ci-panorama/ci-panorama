@@ -7,7 +7,7 @@
 		<maven>3.0.4</maven>
 	</prerequisites>
 
-	<groupId>com.elecomte.ci</groupId>
+	<groupId>fr.elecomte.ci</groupId>
 	<artifactId>ci-look-services</artifactId>
 	<packaging>jar</packaging>
 
