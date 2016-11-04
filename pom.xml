@@ -95,7 +95,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${plugin.spring-boot.version}</version>
 				<configuration>
-					<mainClass>com.elecomte.ci.look.Service</mainClass>
+					<mainClass>fr.elecomte.ci.look.Service</mainClass>
 				</configuration>
 			</plugin>
 

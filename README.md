@@ -31,9 +31,9 @@ A badges generator is also included, allowing you to add in your project descrip
 ## Why a new tool ? With all the CI stuff I already need to use ...
 Yep, to build nicely your project you may already have various different tools, some installed locally, if you manage your own environment, some cloud-based... Each of these tools may have needed various config, management ... You may have needed a lot of time to install everything ...
 
-So, OK, CI-LOOK is supposed to be added to your CI stack, but ...
+*So, OK, CI-LOOK is supposed to be added to your CI stack, but ...*
 
-### It cover something missing in various CI environment.
+### It covers something missing in various CI environments
 I created CI-LOOK because I wanted to add fun badges to our projects README, but as we are using a private CI environment, it is very difficult to have something similar to a Github based project. And for each tool, you have to integrate the specific badges for all of your needs. 
 With CI-LOOK, all badges came from one location only, on a application you can install in your own environment.
 
@@ -41,10 +41,10 @@ In the same time, I wanted to provide a centralised "mvn site" repository for ou
 
 And because the integration is done through simple rest services, data can be read / pushed from almost every existing or futur tools : just add Rest call, or use dedicated plugin, and that's it
 
-### It is limited to one aspect of the CI, nothing more
+### It is limited to one aspect of the CI, nothing more, because that's enough
 CI-LOOK is not a build tool, nor a wiki or a SCM. It's only a manager of some data useful for providing quick overview on your CI process. It will never try to do more that.
 
-The data model is optimized for these needs only, and even if some more kind of data may be added in further releases, the datas from the first v0 is already enough for most of the cases. 
+The data model is optimized for these needs only, and even if  more kind of data may be added in further releases, the data model from the first v0 is already enough for most of the CI use-cases. 
 
 ### It open your imagination for your CI overview
 You have seen some example of big screen with an overview on all the last build, test fealures, with the picture of the developer who have broken the build in big ? And you dream to add that in your small team, but have no time to code every data integration you need ?
