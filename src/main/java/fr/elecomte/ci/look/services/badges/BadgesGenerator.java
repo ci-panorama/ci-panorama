@@ -1,4 +1,4 @@
-package fr.elecomte.ci.look.services.processes;
+package fr.elecomte.ci.look.services.badges;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -17,11 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.github.zafarkhaja.semver.Version;
-
 import fr.elecomte.ci.look.data.model.CiEntity;
-import fr.elecomte.ci.look.data.model.Project;
-import fr.elecomte.ci.look.data.model.Result;
+import fr.elecomte.ci.look.services.processes.ProcessException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -158,183 +155,6 @@ public class BadgesGenerator {
 
 		catch (IOException e) {
 			throw new ProcessException("Cannot load and resize image at " + resourcePath, e);
-		}
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 * @param <T>
-	 */
-	@SuppressWarnings("unused")
-	public static abstract class BadgeValueProvider<T extends CiEntity> {
-
-		abstract boolean isLogo();
-
-		BadgeValue getValue(T entity) {
-			return null;
-		}
-
-		String getLogo(T entity) {
-			return null;
-		}
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class BadgeValue {
-
-		private final String title;
-		private final BadgeColor color;
-
-		/**
-		 * @param title
-		 * @param color
-		 */
-		public BadgeValue(String title, BadgeColor color) {
-			super();
-			this.title = title;
-			this.color = color;
-		}
-
-		/**
-		 * @return the title
-		 */
-		public String getTitle() {
-			return this.title;
-		}
-
-		/**
-		 * @return the color
-		 */
-		public BadgeColor getColor() {
-			return this.color;
-		}
-
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static enum BadgeColor {
-
-		GREEN("#4c1"),
-		GREY("grey"),
-		DARK_GREY("#444"),
-		RED("red"),
-		ORANGE("orange"),
-		NONE("#fff");
-
-		private final String color;
-
-		private BadgeColor(String color) {
-			this.color = color;
-		}
-
-		/**
-		 * @return the color
-		 */
-		public String getColor() {
-			return this.color;
-		}
-	}
-
-	static enum BadgeType {
-
-		BUILD("build.svg", new BuildResultProvider()),
-		VERSION("version.svg", new ProjectVersionProvider()),
-		VERSION_PENDING("pending.svg", new ProjectVersionProvider()),
-		VERSION_RELEASED("released.svg", new ProjectVersionProvider());
-
-		private final String badgeFile;
-		private final BadgeValueProvider<?> provider;
-
-		/**
-		 * @param badgeFile
-		 * @param title
-		 * @param titleColor
-		 * @param provider
-		 */
-		private BadgeType(String badgeFile, BadgeValueProvider<?> provider) {
-			this.badgeFile = badgeFile;
-			this.provider = provider;
-		}
-
-		/**
-		 * @return the badgeFile
-		 */
-		public String getBadgeFile() {
-			return this.badgeFile;
-		}
-
-		/**
-		 * @return the provider
-		 */
-		@SuppressWarnings("unchecked")
-		public <T extends CiEntity> BadgeValueProvider<T> getProvider() {
-			return (BadgeValueProvider<T>) this.provider;
-		}
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class BuildResultProvider extends BadgeValueProvider<Result> {
-
-		private static final BadgeValue SUCCESS = new BadgeValue("success", BadgeColor.GREEN);
-		private static final BadgeValue PENDING = new BadgeValue("pending", BadgeColor.GREY);
-		private static final BadgeValue FAILED = new BadgeValue("failed", BadgeColor.RED);
-
-		@Override
-		boolean isLogo() {
-			return false;
-		}
-
-		@Override
-		BadgeValue getValue(Result entity) {
-			if (entity == null) {
-				return PENDING;
-			}
-			return entity.isSuccess() ? SUCCESS : FAILED;
-		}
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class ProjectVersionProvider extends BadgeValueProvider<Project> {
-
-		private static final BadgeValue NONE = new BadgeValue("N/A", BadgeColor.RED);
-
-		@Override
-		boolean isLogo() {
-			return false;
-		}
-
-		@Override
-		BadgeValue getValue(Project entity) {
-			if (entity == null) {
-				return NONE;
-			}
-
-			Version v = Version.valueOf(entity.getVersion());
-
-			int major = v.getMajorVersion();
-			int minor = v.getMinorVersion();
-			int patch = v.getPatchVersion();
-
-			String value = major + "." + minor + "." + patch;
-
-			if (v.getPreReleaseVersion() != null) {
-				return new BadgeValue(value, BadgeColor.DARK_GREY);
-			}
-
-			return new BadgeValue(value, BadgeColor.ORANGE);
 		}
 	}
 

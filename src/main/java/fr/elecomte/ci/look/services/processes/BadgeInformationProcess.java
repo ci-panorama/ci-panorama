@@ -8,7 +8,8 @@ import fr.elecomte.ci.look.data.model.Result;
 import fr.elecomte.ci.look.data.model.ResultType;
 import fr.elecomte.ci.look.data.repositories.ProjectRepository;
 import fr.elecomte.ci.look.data.repositories.ResultRepository;
-import fr.elecomte.ci.look.services.processes.BadgesGenerator.BadgeType;
+import fr.elecomte.ci.look.services.badges.BadgeType;
+import fr.elecomte.ci.look.services.badges.BadgesGenerator;
 
 /**
  * @author elecomte
