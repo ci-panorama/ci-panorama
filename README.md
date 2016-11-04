@@ -10,7 +10,7 @@
  * Includes a CLI, an UI, a REST API. No security (Work in progress ...)
 
 ## Examples of Badges :
- * Last build of a project : ![Build](docs/build-success.svg?raw=true "Build") or ![Build](docs/build-failed.svg?raw=true "Build")
+ * Last build of a project : ![Build](https://raw.githubusercontent.com/elecomte-pro/ci-look/master/docs/build-success.svg?raw=true "Build") or ![Build](https://raw.githubusercontent.com/elecomte-pro/ci-look/master/docs/build-failed.svg?raw=true "Build")
  * Versions of a project : ![Specified version](docs/version-num.svg?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.svg?raw=true "Pending version") or ![Released version](docs/version-released.svg?raw=true "Released version")
  * **TODO : more to come, this project is currently work in progress**
 
