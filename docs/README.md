@@ -1,0 +1,1 @@
+Here will be managed the detailed documentation.

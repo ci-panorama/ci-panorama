@@ -31,6 +31,10 @@ public abstract class AbstractRecordProcess {
 	 */
 	protected Tool getToolForRecord(Record<?> record) {
 
+		if(record.getSource() == null){
+			return null;
+		}
+		
 		Tool tool = toolFromView(record.getSource());
 
 		if (tool.getVersion() != null) {

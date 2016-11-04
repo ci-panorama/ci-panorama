@@ -24,6 +24,9 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 	@Autowired
 	private ProjectRepository projects;
 
+	@Autowired
+	private BadgesCache badgesCache;
+	
 	/**
 	 * @param record
 	 */
@@ -39,6 +42,8 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		toSave.setSemverHash(this.semverHashGenerator.hashVersion(toSave.getVersion()));
 
 		this.projects.mergeWithExistingAndSave(toSave);
+		
+		this.badgesCache.dropCache(toSave.getCodeName(), toSave.getVersion());
 	}
 
 	/**

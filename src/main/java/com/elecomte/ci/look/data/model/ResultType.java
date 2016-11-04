@@ -7,6 +7,7 @@ package com.elecomte.ci.look.data.model;
 public enum ResultType {
 
 	BUILD,
+	RELEASE,
 	TEST,
 	DEPLOY,
 	INSTALL,

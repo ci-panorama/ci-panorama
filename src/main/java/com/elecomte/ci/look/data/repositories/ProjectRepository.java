@@ -39,6 +39,41 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 	Project findByCodeNameAndVersion(String codeName, String version);
 
 	/**
+	 * Last project version
+	 * 
+	 * @param codeName
+	 * @return
+	 */
+	Project findFirstByCodeNameOrderBySemverHashDesc(String codeName);
+
+	/**
+	 * Fresh project version : the last version with a build update
+	 * 
+	 * @param codeName
+	 * @return
+	 */
+	Project findFreshProject(String codeName);
+
+	/**
+	 * The "fresh" version of the project regarding the specified build type = last tested
+	 * version,
+	 * 
+	 * @param codeName
+	 * @param type
+	 * @return
+	 */
+	Project findFreshProjectForResultType(String codeName, String type);
+
+	/**
+	 * The "fresh" version of the project without any build of the specified type
+	 * 
+	 * @param codeName
+	 * @param type
+	 * @return
+	 */
+	Project findFreshProjectWithoutResultType(String codeName, String type);
+
+	/**
 	 * @param existingProject
 	 * @param newProject
 	 * @return
@@ -50,22 +85,22 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 
 		boolean modified = false;
 
-		if (!newProject.getCommonName().equals(existingProject.getCommonName())) {
+		if (newProject.getCommonName() != null && !newProject.getCommonName().equals(existingProject.getCommonName())) {
 			existingProject.setCommonName(newProject.getCommonName());
 			modified = true;
 		}
 
-		if (!newProject.getDescription().equals(existingProject.getDescription())) {
+		if (newProject.getDescription() != null && !newProject.getDescription().equals(existingProject.getDescription())) {
 			existingProject.setDescription(newProject.getDescription());
 			modified = true;
 		}
 
-		if (!newProject.getInceptionDate().equals(existingProject.getInceptionDate())) {
+		if (newProject.getInceptionDate() != null && !newProject.getInceptionDate().equals(existingProject.getInceptionDate())) {
 			existingProject.setInceptionDate(newProject.getInceptionDate());
 			modified = true;
 		}
 
-		if (!newProject.getProductionTool().equals(existingProject.getProductionTool())) {
+		if (newProject.getProductionTool() != null && !newProject.getProductionTool().equals(existingProject.getProductionTool())) {
 			existingProject.setProductionTool(newProject.getProductionTool());
 			modified = true;
 		}

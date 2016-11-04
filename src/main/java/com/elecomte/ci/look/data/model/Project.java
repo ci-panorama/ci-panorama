@@ -26,6 +26,7 @@ import com.elecomte.ci.look.data.model.Project.ProjectGroup;
  */
 @Entity
 @NamedNativeQueries({
+		// Project groups
 		@NamedNativeQuery(
 				name = "Project.findProjectGroups",
 				query = "select "
@@ -42,7 +43,26 @@ import com.elecomte.ci.look.data.model.Project.ProjectGroup;
 						+ ") pg "
 						+ "inner join Project pd on pd.code_name = pg.code_name and pd.semver_hash = pg.semver_hash",
 				resultClass = ProjectGroup.class,
-				resultSetMapping = "ProjectGroup") })
+				resultSetMapping = "ProjectGroup"),
+
+		// "Fresh" version of project (last with an updated result)
+		@NamedNativeQuery(
+				name = "Project.findFreshProject",
+				query = "select p.* from Project p inner join Result r on r.project_id = p.id where p.code_name = ?1 order by r.result_time desc limit 1",
+				resultClass = Project.class),
+
+		// "Fresh" version of project for specified result type
+		@NamedNativeQuery(
+				name = "Project.findFreshProjectForResultType",
+				query = "select p.* from Project p inner join Result r on r.project_id = p.id where p.code_name = ?1 and r.type like ?2 order by r.result_time desc limit 1",
+				resultClass = Project.class),
+
+		// "Fresh" version of project (last with an updated result)
+		@NamedNativeQuery(
+				name = "Project.findFreshProjectWithoutResultType",
+				query = "select p.* from Project p inner join Result r on r.project_id = p.id where p.code_name = ?1 and r.type not like ?2 order by r.result_time desc limit 1",
+				resultClass = Project.class)
+})
 @SqlResultSetMappings({
 		@SqlResultSetMapping(name = "ProjectGroup", classes = {
 				@ConstructorResult(targetClass = ProjectGroup.class,

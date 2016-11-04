@@ -17,6 +17,7 @@ import com.elecomte.ci.look.services.model.BuildResultRecord;
 import com.elecomte.ci.look.services.model.DeployResultRecord;
 import com.elecomte.ci.look.services.model.ProjectResultListView;
 import com.elecomte.ci.look.services.model.ProjectView;
+import com.elecomte.ci.look.services.model.ReleaseResultRecord;
 import com.elecomte.ci.look.services.model.TestResultRecord;
 import com.elecomte.ci.look.services.processes.ResultInformationProcess;
 
@@ -56,27 +57,13 @@ public class ResultRestService {
 	}
 
 	/**
-	 * @param projectCodeName
-	 * @param projectVersion
-	 * @return
+	 * @param record
 	 */
-	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/build", method = GET)
+	@RequestMapping(value = "/deploy", method = PUT)
 	@ResponseBody
-	public ProjectResultListView projectBuilds(@PathVariable String projectCodeName, @PathVariable String projectVersion) {
+	public void recordDeploy(@RequestBody @Valid DeployResultRecord record) {
 
-		return this.results.getProjectResults(projectCodeName, projectVersion, ResultType.BUILD);
-	}
-
-	/**
-	 * @param projectCodeName
-	 * @param projectVersion
-	 * @return
-	 */
-	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test", method = GET)
-	@ResponseBody
-	public ProjectResultListView projectTests(@PathVariable String projectCodeName, @PathVariable String projectVersion) {
-
-		return this.results.getProjectResults(projectCodeName, projectVersion, ResultType.TEST);
+		this.results.recordResultInformation(record);
 	}
 
 	/**
@@ -95,12 +82,56 @@ public class ResultRestService {
 	/**
 	 * @param record
 	 */
+	@RequestMapping(value = "/build", method = PUT)
+	@ResponseBody
+	public void recordBuild(@RequestBody @Valid BuildResultRecord record) {
+
+		this.results.recordResultInformation(record);
+	}
+
+	/**
+	 * @param projectCodeName
+	 * @param projectVersion
+	 * @return
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/build", method = GET)
+	@ResponseBody
+	public ProjectResultListView projectBuilds(@PathVariable String projectCodeName, @PathVariable String projectVersion) {
+
+		return this.results.getProjectResults(projectCodeName, projectVersion, ResultType.BUILD);
+	}
+
+	/**
+	 * @param record
+	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/build", method = PUT)
 	@ResponseBody
 	public void recordBuild(@PathVariable String projectCodeName, @PathVariable String projectVersion,
 			@RequestBody @Valid BuildResultRecord record) {
 
 		record.setProject(new ProjectView(projectCodeName, projectVersion));
+
+		this.results.recordResultInformation(record);
+	}
+
+	/**
+	 * @param projectCodeName
+	 * @param projectVersion
+	 * @return
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test", method = GET)
+	@ResponseBody
+	public ProjectResultListView projectTests(@PathVariable String projectCodeName, @PathVariable String projectVersion) {
+
+		return this.results.getProjectResults(projectCodeName, projectVersion, ResultType.TEST);
+	}
+
+	/**
+	 * @param record
+	 */
+	@RequestMapping(value = "/test", method = PUT)
+	@ResponseBody
+	public void recordTest(@RequestBody @Valid TestResultRecord record) {
 
 		this.results.recordResultInformation(record);
 	}
@@ -119,11 +150,23 @@ public class ResultRestService {
 	}
 
 	/**
+	 * @param projectCodeName
+	 * @param projectVersion
+	 * @return
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/release", method = GET)
+	@ResponseBody
+	public ProjectResultListView projectReleases(@PathVariable String projectCodeName, @PathVariable String projectVersion) {
+
+		return this.results.getProjectResults(projectCodeName, projectVersion, ResultType.RELEASE);
+	}
+
+	/**
 	 * @param record
 	 */
-	@RequestMapping(value = "/deploy", method = PUT)
+	@RequestMapping(value = "/release", method = PUT)
 	@ResponseBody
-	public void recordDeploy(@RequestBody @Valid DeployResultRecord record) {
+	public void recordRelease(@RequestBody @Valid ReleaseResultRecord record) {
 
 		this.results.recordResultInformation(record);
 	}
@@ -131,19 +174,12 @@ public class ResultRestService {
 	/**
 	 * @param record
 	 */
-	@RequestMapping(value = "/build", method = PUT)
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/release", method = PUT)
 	@ResponseBody
-	public void recordBuild(@RequestBody @Valid BuildResultRecord record) {
+	public void recordRelease(@PathVariable String projectCodeName, @PathVariable String projectVersion,
+			@RequestBody @Valid ReleaseResultRecord record) {
 
-		this.results.recordResultInformation(record);
-	}
-
-	/**
-	 * @param record
-	 */
-	@RequestMapping(value = "/test", method = PUT)
-	@ResponseBody
-	public void recordTest(@RequestBody @Valid TestResultRecord record) {
+		record.setProject(new ProjectView(projectCodeName, projectVersion));
 
 		this.results.recordResultInformation(record);
 	}

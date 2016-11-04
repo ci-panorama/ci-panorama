@@ -28,7 +28,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.elecomte.ci.look.Service.Packages;
 import com.elecomte.ci.look.Service.ServiceConfiguration;
-import com.elecomte.ci.look.services.rest.Constants;
 import com.elecomte.ci.look.services.rest.mappers.JsonPayloadModule;
 import com.elecomte.ci.look.services.rest.mappers.LocalDateModule;
 import com.elecomte.ci.look.services.rest.mappers.LocalDateTimeModule;
@@ -56,6 +55,9 @@ public class Service {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Service.class);
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(Service.class, args);
 
@@ -68,7 +70,7 @@ public class Service {
 	 */
 	@Configuration
 	public static class ServiceConfiguration extends WebMvcConfigurerAdapter {
-		
+
 		/**
 		 * @return
 		 */
@@ -79,19 +81,38 @@ public class Service {
 			return new Docket(DocumentationType.SWAGGER_2)
 					.select()
 					.apis(RequestHandlerSelectors.any())
-					.paths(PathSelectors.regex(Constants.API_ROOT + "/.*"))
+					.paths(PathSelectors.regex("/.*"))
 					.build()
 					.directModelSubstitute(LocalDate.class, String.class)
 					.directModelSubstitute(LocalDateTime.class, String.class);
 		}
 
+		/**
+		 * @return
+		 * @throws SQLException
+		 */
 		@Bean(initMethod = "start", destroyMethod = "stop")
 		@Profile(Profiles.H2_CONSOLE)
-		public Server createH2WebServer() throws SQLException {
+		public Server h2WebConsole() throws SQLException {
 			LOGGER.info("H2 CONSOLE activated");
 			return new Server(new WebServer(), "-web", "-webAllowOthers", "-webPort", "8082");
 		}
 
+		/**
+		 * @return
+		 */
+		@Bean
+		public freemarker.template.Configuration freemarkerConfiguration() {
+			freemarker.template.Configuration freemarkerConfiguration = new freemarker.template.Configuration(
+					freemarker.template.Configuration.VERSION_2_3_25);
+			freemarkerConfiguration.setClassForTemplateLoading(this.getClass(), "/badges/svg");
+			return freemarkerConfiguration;
+		}
+
+		/**
+		 * @param converters
+		 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter#configureMessageConverters(java.util.List)
+		 */
 		@Override
 		public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
@@ -133,7 +154,7 @@ public class Service {
 		String PROCESSES = ROOT + ".services.processes";
 		String REST = ROOT + ".services.rest";
 	}
-	
+
 	static interface Profiles {
 		String H2_CONSOLE = "h2console";
 		String SWAGGER_UI = "swagger";

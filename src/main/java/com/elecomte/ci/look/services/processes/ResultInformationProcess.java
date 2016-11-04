@@ -32,6 +32,9 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 	@Autowired
 	private ResultRepository results;
 
+	@Autowired
+	private BadgesCache badgesCache;
+
 	/**
 	 * @param record
 	 */
@@ -58,6 +61,8 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 		result.setProject(toAssociate);
 
 		this.results.save(result);
+
+		this.badgesCache.dropCache(toAssociate.getCodeName(), toAssociate.getVersion());
 	}
 
 	/**
@@ -124,15 +129,20 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 
 		Result result = new Result();
 
-		result.setMessage(view.getMessage());
-		result.setSuccess(view.isSuccess());
+		if (view != null) {
+			result.setMessage(view.getMessage());
+			result.setSuccess(view.isSuccess());
 
-		if (view.getPayload() != null) {
-			result.setPayload(view.getPayload().getValue());
+			if (view.getPayload() != null) {
+				result.setPayload(view.getPayload().getValue());
+			}
+
+			result.setResultTime(view.getResultTime() != null ? view.getResultTime() : LocalDateTime.now());
+		} else {
+			result.setResultTime(LocalDateTime.now());
 		}
 
 		result.setType(type);
-		result.setResultTime(view.getResultTime() != null ? view.getResultTime() : LocalDateTime.now());
 
 		return result;
 	}
