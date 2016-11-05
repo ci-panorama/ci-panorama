@@ -9,7 +9,7 @@ import fr.elecomte.ci.look.services.badges.BadgeValue;
  * @param <T>
  */
 @SuppressWarnings("unused")
-public abstract class BadgeValueProvider<T extends CiEntity> {
+public abstract class BadgeValueProvider<T> {
 
 	public abstract boolean isLogo();
 

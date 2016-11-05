@@ -8,7 +8,7 @@ import fr.elecomte.ci.look.services.badges.BadgeValue.BadgeColor;
  * @author elecomte
  * @since 0.1.0
  */
-public class BuildResultProvider extends BadgeValueProvider<Result> {
+public class ResultSuccessProvider extends BadgeValueProvider<Result> {
 
 	private static final BadgeValue SUCCESS = new BadgeValue("success", BadgeColor.GREEN);
 	private static final BadgeValue PENDING = new BadgeValue("pending", BadgeColor.GREY);

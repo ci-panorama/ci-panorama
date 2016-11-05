@@ -1,9 +1,8 @@
 package fr.elecomte.ci.look.services.badges;
 
-import fr.elecomte.ci.look.data.model.CiEntity;
 import fr.elecomte.ci.look.services.badges.providers.BadgeValueProvider;
-import fr.elecomte.ci.look.services.badges.providers.BuildResultProvider;
 import fr.elecomte.ci.look.services.badges.providers.ProjectVersionProvider;
+import fr.elecomte.ci.look.services.badges.providers.ResultSuccessProvider;
 
 /**
  * All supported badge types
@@ -13,7 +12,7 @@ import fr.elecomte.ci.look.services.badges.providers.ProjectVersionProvider;
  */
 public enum BadgeType {
 
-	BUILD("build.svg", new BuildResultProvider()),
+	BUILD("build.svg", new ResultSuccessProvider()),
 	VERSION("version.svg", new ProjectVersionProvider()),
 	VERSION_PENDING("pending.svg", new ProjectVersionProvider()),
 	VERSION_RELEASED("released.svg", new ProjectVersionProvider());
@@ -43,7 +42,7 @@ public enum BadgeType {
 	 * @return the provider
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends CiEntity> BadgeValueProvider<T> getProvider() {
+	public <T> BadgeValueProvider<T> getProvider() {
 		return (BadgeValueProvider<T>) this.provider;
 	}
 }
