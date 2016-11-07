@@ -65,4 +65,13 @@ public class ToolView extends View {
 		this.vendorName = vendorName;
 	}
 
+	/**
+	 * @return
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.name + "/" + this.version;
+	}
+
 }

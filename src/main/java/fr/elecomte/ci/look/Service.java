@@ -59,6 +59,9 @@ public class Service {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
+		LOGGER.debug("########### starting CI-LOOK ###########");
+
 		SpringApplication.run(Service.class, args);
 
 		LOGGER.info("########### CI-LOOK started ###########");
@@ -103,9 +106,15 @@ public class Service {
 		 */
 		@Bean
 		public freemarker.template.Configuration freemarkerConfiguration() {
+			String resourcesLocation = "/badges/svg";
+
 			freemarker.template.Configuration freemarkerConfiguration = new freemarker.template.Configuration(
 					freemarker.template.Configuration.VERSION_2_3_25);
-			freemarkerConfiguration.setClassForTemplateLoading(this.getClass(), "/badges/svg");
+
+			freemarkerConfiguration.setClassForTemplateLoading(this.getClass(), resourcesLocation);
+
+			LOGGER.debug("Freemarker configuration loaded with resources from {}", resourcesLocation);
+
 			return freemarkerConfiguration;
 		}
 
@@ -133,6 +142,8 @@ public class Service {
 			MappingJackson2XmlHttpMessageConverter xmlConverter = new MappingJackson2XmlHttpMessageConverter();
 			converters.add(xmlConverter);
 			setModules(xmlConverter.getObjectMapper());
+
+			LOGGER.debug("Jackson modules configured");
 		}
 
 		/**

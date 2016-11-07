@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fr.elecomte.ci.look.data.model.CiEntity;
 import fr.elecomte.ci.look.services.processes.ProcessException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -54,7 +53,7 @@ public class BadgesGenerator {
 	 * @return
 	 * @throws ProcessException
 	 */
-	public <T extends CiEntity> String getBadge(BadgeType type, T entity)
+	public <T> String getBadge(BadgeType type, T entity)
 			throws ProcessException {
 
 		Map<String, String> dataMap = new HashMap<>();

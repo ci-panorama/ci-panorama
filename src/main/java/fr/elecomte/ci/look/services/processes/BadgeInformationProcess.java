@@ -1,5 +1,9 @@
 package fr.elecomte.ci.look.services.processes;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +14,8 @@ import fr.elecomte.ci.look.data.repositories.ProjectRepository;
 import fr.elecomte.ci.look.data.repositories.ResultRepository;
 import fr.elecomte.ci.look.services.badges.BadgeType;
 import fr.elecomte.ci.look.services.badges.BadgesGenerator;
+import fr.elecomte.ci.look.services.payloads.PayloadExtractor;
+import fr.elecomte.ci.look.services.payloads.extracts.TestResultPayloadExtract;
 
 /**
  * @author elecomte
@@ -17,6 +23,8 @@ import fr.elecomte.ci.look.services.badges.BadgesGenerator;
  */
 @Service
 public class BadgeInformationProcess {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(BadgeInformationProcess.class);
 
 	public static final String PENDING_VERSION = "pending";
 	public static final String RELEASED_VERSION = "released";
@@ -33,7 +41,64 @@ public class BadgeInformationProcess {
 	private BadgesGenerator badgeGenerator;
 
 	@Autowired
+	private PayloadExtractor payloadExtractor;
+
+	@Autowired
 	private BadgesCache badgesCache;
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getTestCountBadge(String code, String version) throws ProcessException {
+
+		String badge = this.badgesCache.getCachedBadge(code, version, BadgeType.TEST_COUNT.name());
+
+		if (badge == null) {
+
+			try {
+
+				LOGGER.debug("No \"test-count\" cached badge found for project {}/{}. Generate it", code, version);
+
+				Result testResult = getProjectResult(code, version, ResultType.TEST);
+
+				TestResultPayloadExtract payload = testResult != null ? this.payloadExtractor.extractFromResult(testResult.getPayload(), testResult) : null;
+
+				// If payload found, use payload generated badge, else default test badge
+				badge = payload != null
+						? this.badgeGenerator.getBadge(BadgeType.TEST_COUNT, payload)
+						: this.badgeGenerator.getBadge(BadgeType.TEST, testResult);
+
+				this.badgesCache.putCachedBadge(code, version, BadgeType.TEST_COUNT.name(), badge);
+
+			} catch (IOException e) {
+				throw new ProcessException("Cannot process payload", e);
+			}
+		}
+
+		return badge;
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getTestBadge(String code, String version) throws ProcessException {
+
+		String badge = this.badgesCache.getCachedBadge(code, version, BadgeType.TEST.name());
+
+		if (badge == null) {
+			LOGGER.debug("No \"test\" cached badge found for project {}/{}. Generate it", code, version);
+			badge = this.badgeGenerator.getBadge(BadgeType.TEST, getProjectResult(code, version, ResultType.TEST));
+			this.badgesCache.putCachedBadge(code, version, BadgeType.TEST.name(), badge);
+		}
+
+		return badge;
+	}
 
 	/**
 	 * @param code
@@ -46,12 +111,12 @@ public class BadgeInformationProcess {
 		String badge = this.badgesCache.getCachedBadge(code, version, BadgeType.BUILD.name());
 
 		if (badge == null) {
+			LOGGER.debug("No \"build\" cached badge found for project {}/{}. Generate it", code, version);
 			badge = this.badgeGenerator.getBadge(BadgeType.BUILD, getProjectResult(code, version, ResultType.BUILD));
 			this.badgesCache.putCachedBadge(code, version, BadgeType.BUILD.name(), badge);
 		}
 
 		return badge;
-
 	}
 
 	/**
@@ -78,6 +143,7 @@ public class BadgeInformationProcess {
 		String badge = this.badgesCache.getCachedBadge(code, version, type.name());
 
 		if (badge == null) {
+			LOGGER.debug("No \"version-{}\" cached badge found for project {}/{}. Generate it", type, code, version);
 			badge = this.badgeGenerator.getBadge(type, getProject(code, version));
 			this.badgesCache.putCachedBadge(code, version, BadgeType.BUILD.name(), badge);
 		}

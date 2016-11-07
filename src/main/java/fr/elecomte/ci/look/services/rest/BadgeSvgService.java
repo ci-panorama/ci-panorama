@@ -41,4 +41,24 @@ public class BadgeSvgService {
 	public String version(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
 		return this.badges.getVersionBadge(projectCodeName, projectVersion);
 	}
+
+	/**
+	 * @param record
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String test(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getTestBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test-count.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String testCount(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getTestCountBadge(projectCodeName, projectVersion);
+	}
 }

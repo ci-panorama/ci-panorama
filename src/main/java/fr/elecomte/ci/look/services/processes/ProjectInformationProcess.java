@@ -3,6 +3,8 @@ package fr.elecomte.ci.look.services.processes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +23,23 @@ import fr.elecomte.ci.look.services.model.ProjectView;
 @Service
 public class ProjectInformationProcess extends AbstractRecordProcess {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectInformationProcess.class);
+
 	@Autowired
 	private ProjectRepository projects;
 
 	@Autowired
 	private BadgesCache badgesCache;
-	
+
 	/**
 	 * @param record
 	 */
 	public void recordProjectInformation(ProjectRecord record) {
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Processing record of project {}/{} from tool", record.getPayload().getCode(), record.getPayload().getName(),
+					record.getSource());
+		}
 
 		Project toSave = projectFromView(record.getPayload());
 
@@ -42,7 +51,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		toSave.setSemverHash(this.semverHashGenerator.hashVersion(toSave.getVersion()));
 
 		this.projects.mergeWithExistingAndSave(toSave);
-		
+
 		this.badgesCache.dropCache(toSave.getCodeName(), toSave.getVersion());
 	}
 
