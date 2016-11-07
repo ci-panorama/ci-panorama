@@ -12,6 +12,7 @@
 ## Examples of Badges :
  * Last build of a project : ![Build](docs/build-success.png?raw=true "Build") or ![Build](docs/build-failed.png?raw=true "Build")
  * Versions of a project : ![Specified version](docs/version-num.png?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.png?raw=true "Pending version") or ![Released version](docs/version-released.png?raw=true "Released version")
+ * Tests results of a project : ![Count KO](docs/test-count-failed.png?raw=true "Count KO"), ![Count OK](docs/test-count-success.png?raw=true "Count OK") or ![All disabled](docs/test-count-ignored.png?raw=true "All disabled")
  * **TODO : more to come, this project is currently work in progress**
 
 ## What it CI-LOOK ?
@@ -234,7 +235,24 @@ All the badges are SVG files generated from a project identifier (using project 
  * *Last build was successful* : ![Build](docs/build-success.png?raw=true "Build")
  * *Last build was failed* : ![Build](docs/build-failed.png?raw=true "Build")
  * *No build found for specified project* : ![Build](docs/build-pending.png?raw=true "Build")
- 
+
+### Test - Last test result status
+**get /badges/{projectCode}/{projectVersion}/test.svg** => most recent test result status for specified project version. "Pending" if none found, "success" if result was "success", "failed" else
+
+**Results :** 
+ * *Last test was successful* : ![Build](docs/test-success.png?raw=true "Test")
+ * *Last test was failed* : ![Build](docs/test-failed.png?raw=true "Test")
+ * *No test found for specified project* : ![Build](docs/test-pending.png?raw=true "Test")
+
+### Test count - Last test result payload count
+**get /badges/{projectCode}/{projectVersion}/test-count.svg** => If the most recent test result for specified project version has a specified payload, provides the count of success tests over failed tests. Take care also of ignored count.
+
+**Results :** 
+ * *Last test was successful and count of success is available in payload* : ![Build](docs/test-count-success.png?raw=true "Test")
+ * *Last test was successful but count of success tests is 0 and ignored is > 0* (all tests are assumed ignored) : ![Build](docs/test-count-ignored.png?raw=true "Test")
+ * *Last test was a failure and count of success and failure is available in payload* : ![Build](docs/test-count-failed.png?raw=true "Test")
+ * *Payload or count in payload is missing* : failover to default test result status badge ![Build](docs/test-success.png?raw=true "Test"), ![Build](docs/test-failed.png?raw=true "Test") or ![Build](docs/test-pending.png?raw=true "Test")
+
 ### Version - Last version number
 For these 3 badges variants, only the fixed semver compliant version is displayed. So if the last "released" if for example "1.3.2.RC", then "1.3.2" is displayed.
 
