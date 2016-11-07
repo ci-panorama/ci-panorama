@@ -11,7 +11,6 @@ import fr.elecomte.ci.look.data.model.Project;
 import fr.elecomte.ci.look.data.model.Result;
 import fr.elecomte.ci.look.data.model.ResultType;
 import fr.elecomte.ci.look.data.model.Tool;
-import fr.elecomte.ci.look.data.repositories.ProjectRepository;
 import fr.elecomte.ci.look.data.repositories.ResultRepository;
 import fr.elecomte.ci.look.services.model.JsonPayload;
 import fr.elecomte.ci.look.services.model.ProjectResultListView;
@@ -27,13 +26,10 @@ import fr.elecomte.ci.look.services.model.ResultView;
 public class ResultInformationProcess extends AbstractRecordProcess {
 
 	@Autowired
-	private ProjectRepository projects;
-
-	@Autowired
 	private ResultRepository results;
 
 	@Autowired
-	private BadgesCache badgesCache;
+	private ProjectInformationProcess projectInfoProcesses;
 
 	/**
 	 * @param record
@@ -42,7 +38,7 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 
 		Tool tool = getToolForRecord(record);
 
-		Project toAssociate = this.projects.findByCodeNameAndVersion(record.getProject().getCode(), record.getProject().getVersion());
+		Project toAssociate = this.projectInfoProcesses.getProject(record.getProject().getCode(), record.getProject().getVersion());
 
 		// If doesn't exist yet,
 		if (toAssociate == null) {
@@ -50,8 +46,7 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 			// Create it anyway
 			toAssociate = ProjectInformationProcess.projectFromView(record.getProject());
 			toAssociate.setProductionTool(tool);
-			toAssociate.setSemverHash(this.semverHashGenerator.hashVersion(toAssociate.getVersion()));
-			toAssociate = this.projects.mergeWithExistingAndSave(toAssociate);
+			toAssociate = this.projectInfoProcesses.refreshProject(toAssociate);
 		}
 
 		Result result = resultFromView(record.getPayload(), record.getType());
@@ -62,7 +57,8 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 
 		this.results.save(result);
 
-		this.badgesCache.dropCache(toAssociate.getCodeName(), toAssociate.getVersion());
+		// Update all references (caches)
+		this.projectInfoProcesses.markUpdatedProject(toAssociate);
 	}
 
 	/**
@@ -73,7 +69,7 @@ public class ResultInformationProcess extends AbstractRecordProcess {
 	 */
 	public ProjectResultListView getProjectResults(String projectCodeName, String projectVersion, ResultType type) {
 
-		Project project = this.projects.findByCodeNameAndVersion(projectCodeName, projectVersion);
+		Project project = this.projectInfoProcesses.getProject(projectCodeName, projectVersion);
 
 		if (project == null) {
 			return null;

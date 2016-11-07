@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import fr.elecomte.ci.look.data.model.Project;
 import fr.elecomte.ci.look.data.model.Result;
 import fr.elecomte.ci.look.data.model.ResultType;
-import fr.elecomte.ci.look.data.repositories.ProjectRepository;
 import fr.elecomte.ci.look.data.repositories.ResultRepository;
 import fr.elecomte.ci.look.services.badges.BadgeType;
 import fr.elecomte.ci.look.services.badges.BadgesGenerator;
@@ -26,16 +25,11 @@ public class BadgeInformationProcess {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BadgeInformationProcess.class);
 
-	public static final String PENDING_VERSION = "pending";
-	public static final String RELEASED_VERSION = "released";
-	public static final String FRESH_VERSION = "fresh";
-	public static final String LAST_VERSION = "last";
-
 	@Autowired
 	private ResultRepository results;
 
 	@Autowired
-	private ProjectRepository projects;
+	private ProjectInformationProcess projectInfoProcesses;
 
 	@Autowired
 	private BadgesGenerator badgeGenerator;
@@ -64,7 +58,8 @@ public class BadgeInformationProcess {
 
 				Result testResult = getProjectResult(code, version, ResultType.TEST);
 
-				TestResultPayloadExtract payload = testResult != null ? this.payloadExtractor.extractFromResult(testResult.getPayload(), testResult) : null;
+				TestResultPayloadExtract payload = testResult != null
+						? this.payloadExtractor.extractFromResult(testResult.getPayload(), testResult) : null;
 
 				// If payload found, use payload generated badge, else default test badge
 				badge = payload != null
@@ -132,9 +127,9 @@ public class BadgeInformationProcess {
 		BadgeType type = null;
 
 		// Rendering depend of required version
-		if (version.equals(PENDING_VERSION)) {
+		if (version.equals(ProjectInformationProcess.PENDING_VERSION)) {
 			type = BadgeType.VERSION_PENDING;
-		} else if (version.equals(RELEASED_VERSION)) {
+		} else if (version.equals(ProjectInformationProcess.RELEASED_VERSION)) {
 			type = BadgeType.VERSION_RELEASED;
 		} else {
 			type = BadgeType.VERSION;
@@ -144,7 +139,7 @@ public class BadgeInformationProcess {
 
 		if (badge == null) {
 			LOGGER.debug("No \"version-{}\" cached badge found for project {}/{}. Generate it", type, code, version);
-			badge = this.badgeGenerator.getBadge(type, getProject(code, version));
+			badge = this.badgeGenerator.getBadge(type, this.projectInfoProcesses.getProject(code, version));
 			this.badgesCache.putCachedBadge(code, version, BadgeType.BUILD.name(), badge);
 		}
 
@@ -155,33 +150,12 @@ public class BadgeInformationProcess {
 	/**
 	 * @param code
 	 * @param version
-	 * @return
-	 */
-	private Project getProject(String code, String version) {
-
-		switch (version) {
-		case LAST_VERSION:
-			return this.projects.findFirstByCodeNameOrderBySemverHashDesc(code);
-		case FRESH_VERSION:
-			return this.projects.findFreshProject(code);
-		case PENDING_VERSION:
-			return this.projects.findFreshProjectWithoutResultType(code, ResultType.RELEASE.name());
-		case RELEASED_VERSION:
-			return this.projects.findFreshProjectForResultType(code, ResultType.RELEASE.name());
-		default:
-			return this.projects.findByCodeNameAndVersion(code, version);
-		}
-	}
-
-	/**
-	 * @param code
-	 * @param version
 	 * @param type
 	 * @return
 	 */
 	private Result getProjectResult(String code, String version, ResultType type) {
 
-		Project project = getProject(code, version);
+		Project project = this.projectInfoProcesses.getProject(code, version);
 		return project != null ? this.results.findFirstByProjectAndTypeOrderByResultTimeDesc(project, type) : null;
 	}
 }
