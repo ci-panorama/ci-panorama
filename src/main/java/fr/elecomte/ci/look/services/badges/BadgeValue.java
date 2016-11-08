@@ -39,7 +39,9 @@ public class BadgeValue {
 	 */
 	public enum BadgeColor {
 
+		BLACK("#000"),
 		GREEN("#4c1"),
+		LIGHT_GREY("#EEE"),
 		GREY("grey"),
 		DARK_GREY("#444"),
 		RED("red"),

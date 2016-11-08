@@ -32,6 +32,13 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 	 * @param type
 	 * @return
 	 */
+	List<Result> findFirst10ByProjectAndTypeOrderByResultTimeDesc(Project project, ResultType type);
+	
+	/**
+	 * @param project
+	 * @param type
+	 * @return
+	 */
 	List<Result> findByProjectAndTypeOrderByResultTimeDesc(Project project, ResultType type);
 
 }

@@ -10,10 +10,24 @@
  * Includes a CLI, an UI, a REST API. No security (Work in progress ...)
 
 ## Examples of Badges :
- * Last build of a project : ![Build](docs/build-success.png?raw=true "Build") or ![Build](docs/build-failed.png?raw=true "Build")
- * Versions of a project : ![Specified version](docs/version-num.png?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.png?raw=true "Pending version") or ![Released version](docs/version-released.png?raw=true "Released version")
- * Tests results of a project : ![Count KO](docs/test-count-failed.png?raw=true "Count KO"), ![Count OK](docs/test-count-success.png?raw=true "Count OK") or ![All disabled](docs/test-count-ignored.png?raw=true "All disabled")
- * **TODO : more to come, this project is currently work in progress**
+
+**Last build of a project** :
+
+![Build](docs/build-success.png?raw=true "Build") or ![Build](docs/build-failed.png?raw=true "Build")
+
+**Versions of a project** :
+
+![Specified version](docs/version-num.png?raw=true "Specified version"), ![Pending (unstable) version](docs/version-pending.png?raw=true "Pending version") or ![Released version](docs/version-released.png?raw=true "Released version")
+
+**Tests results of a project** :
+
+![Count KO](docs/test-count-failed.png?raw=true "Count KO"), ![Count OK](docs/test-count-success.png?raw=true "Count OK") or ![All disabled](docs/test-count-ignored.png?raw=true "All disabled")
+
+**Tests count evolution ("graph badge")** :
+
+![Test Evolution](docs/test-evolution.png?raw=true "Test Evolution")
+
+**TODO : more to come, this project is currently work in progress**
 
 ## What it CI-LOOK ?
 CI-LOOK is a basic stand-alone repository providing data about your projects and on every build, test, deployment, analysis you want to handle and share. It is currently built in Java.
@@ -70,12 +84,19 @@ Find a small CPU, a few 100Mb of memories, maybe a db (maybe : you can use it wi
  * A plugin system. You already handle enought plugins, CI-LOOK will handle a customization feature for UI and badges, but that's all. More features will add more complexity and it's not the idea here.
  * An advanced security system. The managed data are not critical, and CI-LOOK is mostly conceved for private environment. So, except the authentication system, no right, profile, or group management will be added
 
+### It's not a "new" idea
+Actually, everything CI-LOOK does was mainly existing in various tools, even in technology solutions created many years ago. But your CI environment may not have all of these tools, or was "improved" and now doesn't have anymore a tool able to handle one part of your project information. So here CI-LOOK may help :
+ * It manage all the basic project information like many other tools do. But with consistency and in one place : you don't have to get it from elsewhere
+ * The information is managed with an objective of human readibility. The services are not supposed to provides data to other tools : they are optimized for UI / CLI needs, so, for direct use by an user.
+
+
 
 # Usage
 
 ## Datamodel
 
-TODO 
+Here an overview on the datamodel :
+![CI-LOOK datamodel](docs/model.png?raw=true "CI-LOOK datamodel")
 
 ### Content
 The managed datamodel is :
@@ -115,18 +136,18 @@ A type "other" exists => Any tool can be used.
  
 ### Managed Result types
 The project "result" data type can be : 
- * BUILD : a build / packaging / compilation was processed (on developer env, on CI env ...)
- * RELEASE : the project was released and is now available in repository or ready for install (mvn release, manual release in Jenkins, merge on master branch from SCM ...)
- * TEST : a test set was run (launched from CI tool, from maven ...)
- * DEPLOY : the project was deployed in a repository (deploy from CI tool in npm repo, maven repo ...)
- * INSTALL : the project was installed on an environment (integration environment by CI, manually launched installation in production from jenkins ...)
- * AUDIT : an analysis was ran on the project (covertura, checkstyle, PMD, nexus syntesis ...) 
- * OTHER : Whatever you want to specify as a "Result" on your project
+ * **BUILD** : a build / packaging / compilation was processed (on developer env, on CI env ...)
+ * **RELEASE** : the project was released and is now available in repository or ready for install (mvn release, manual release in Jenkins, merge on master branch from SCM ...)
+ * **TEST** : a test set was run (launched from CI tool, from maven ...)
+ * **DEPLOY** : the project was deployed in a repository (deploy from CI tool in npm repo, maven repo ...)
+ * **INSTALL** : the project was installed on an environment (integration environment by CI, manually launched installation in production from jenkins ...)
+ * **AUDIT** : an analysis was ran on the project (covertura, checkstyle, PMD, nexus syntesis ...) 
+ * **OTHER** : Whatever you want to specify as a "Result" on your project
  
 ### Result types payloads
 The payload for each result type is actually freely defined, but for clean badge and report display, some dedicated models are specified and should be used. 
 
-All properties are actually optional : Badge generation will try to use whatever is present
+**All properties are actually optional** : Badge generation will try to use whatever is present. Any properties are allowed for the payload contents, and will saved in the project Result Datamodel, but only default payload models will be used for badges / metrics.
 
 **For TEST result :**
 
@@ -137,6 +158,13 @@ All properties are actually optional : Badge generation will try to use whatever
        "duration": {{int nbr of seconds for test set execution}}
     }
  
+**For BUILD result :**
+
+    "payload": {
+       "user": "{{Freely specified person name who launched the build - should be a developer email for automatic aggregation}}",
+       "duration": {{int nbr of seconds for build execution}}
+    }
+    
 **For INSTALL result :**
 
     "payload": {
@@ -152,6 +180,20 @@ All properties are actually optional : Badge generation will try to use whatever
        "files": ["{{an array of deployed filenames. Can be maven classifier for example}}"]
     }
 
+**For AUDIT result :**
+
+    "payload": {
+    	 "ncss": {{Int nbr of Non Commenting Source Statements (NCSS) on the project}},
+    	 "violations": [
+    	     {
+    	        "type": "{{Name of violation type identified on the audit. Multiple violations can be defined}}",
+    	        "minor": {{int nbr of minor violations for the identified type}}, 
+    	        "major": {{int nbr of major violations for the identified type}}, 
+    	        "url": "{{Freely specified for violation report access, or associated bug-tracker}}" 
+    	     }
+    	 ],
+       "duration": {{int nbr of seconds for audit set execution}}
+    }
 
 ## API
 
@@ -252,6 +294,15 @@ All the badges are SVG files generated from a project identifier (using project 
  * *Last test was successful but count of success tests is 0 and ignored is > 0* (all tests are assumed ignored) : ![Build](docs/test-count-ignored.png?raw=true "Test")
  * *Last test was a failure and count of success and failure is available in payload* : ![Build](docs/test-count-failed.png?raw=true "Test")
  * *Payload or count in payload is missing* : failover to default test result status badge ![Build](docs/test-success.png?raw=true "Test"), ![Build](docs/test-failed.png?raw=true "Test") or ![Build](docs/test-pending.png?raw=true "Test")
+
+### Test evolution - 10 last tests results in a graph
+**get /badges/{projectCode}/{projectVersion}/test-evolution.svg** => For a maximum of 10 test results on the specified project, produces a graph of the failed / success / ignored tests.
+
+**Results :** 
+ * *Graph with data* : 
+
+![Graph](docs/test-evolution.png?raw=true "Graph")
+ * *Graph without data* Empty gride
 
 ### Version - Last version number
 For these 3 badges variants, only the fixed semver compliant version is displayed. So if the last "released" if for example "1.3.2.RC", then "1.3.2" is displayed.

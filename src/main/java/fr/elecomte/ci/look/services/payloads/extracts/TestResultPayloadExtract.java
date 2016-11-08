@@ -1,5 +1,7 @@
 package fr.elecomte.ci.look.services.payloads.extracts;
 
+import java.util.List;
+
 /**
  * <p>
  * Payload for a test. Model is :
@@ -92,5 +94,25 @@ public class TestResultPayloadExtract extends ResultPayloadExtract {
 	 */
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+
+	/**
+	 * @param payloads
+	 * @return
+	 */
+	public static int getMaxTotal(List<TestResultPayloadExtract> payloads) {
+
+		int maxTotal = 0;
+
+		for (TestResultPayloadExtract e : payloads) {
+			if (e != null) {
+				int total = e.getFailed() + e.getSuccess() + e.getIgnored();
+				if (total > maxTotal) {
+					maxTotal = total;
+				}
+			}
+		}
+
+		return maxTotal;
 	}
 }

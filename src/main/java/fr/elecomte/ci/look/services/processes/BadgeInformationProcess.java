@@ -1,6 +1,7 @@
 package fr.elecomte.ci.look.services.processes;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ public class BadgeInformationProcess {
 				Result testResult = getProjectResult(code, version, ResultType.TEST);
 
 				TestResultPayloadExtract payload = testResult != null
-						? this.payloadExtractor.extractFromResult(testResult.getPayload(), testResult) : null;
+						? this.payloadExtractor.extractFromResult(testResult) : null;
 
 				// If payload found, use payload generated badge, else default test badge
 				badge = payload != null
@@ -67,6 +68,39 @@ public class BadgeInformationProcess {
 						: this.badgeGenerator.getBadge(BadgeType.TEST, testResult);
 
 				this.badgesCache.putCachedBadge(code, version, BadgeType.TEST_COUNT.name(), badge);
+
+			} catch (IOException e) {
+				throw new ProcessException("Cannot process payload", e);
+			}
+		}
+
+		return badge;
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getTestEvolutionBadge(String code, String version) throws ProcessException {
+
+		String badge = this.badgesCache.getCachedBadge(code, version, BadgeType.TEST_EVOLUTION.name());
+
+		if (badge == null) {
+
+			try {
+
+				LOGGER.debug("No \"test-evolution\" cached badge found for project {}/{}. Generate it", code, version);
+
+				List<Result> testResults = getTenProjectResults(code, version, ResultType.TEST);
+
+				List<TestResultPayloadExtract> payloads = testResults != null && testResults.size() > 0
+						? this.payloadExtractor.extractFromResults(testResults) : null;
+
+				badge = this.badgeGenerator.getBadge(BadgeType.TEST_EVOLUTION, payloads);
+
+				this.badgesCache.putCachedBadge(code, version, BadgeType.TEST_EVOLUTION.name(), badge);
 
 			} catch (IOException e) {
 				throw new ProcessException("Cannot process payload", e);
@@ -145,6 +179,18 @@ public class BadgeInformationProcess {
 
 		return badge;
 
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @param type
+	 * @return
+	 */
+	private List<Result> getTenProjectResults(String code, String version, ResultType type) {
+
+		Project project = this.projectInfoProcesses.getProject(code, version);
+		return project != null ? this.results.findFirst10ByProjectAndTypeOrderByResultTimeDesc(project, type) : null;
 	}
 
 	/**
