@@ -104,7 +104,12 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 			existingProject.setProductionTool(newProject.getProductionTool());
 			modified = true;
 		}
-
+		
+		if (newProject.getTeam() != null && !newProject.getTeam().equals(existingProject.getTeam())) {
+			existingProject.setTeam(newProject.getTeam());
+			modified = true;
+		}
+		
 		return modified;
 	}
 

@@ -8,14 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.elecomte.ci.look.data.model.Developer;
 import fr.elecomte.ci.look.data.model.Project;
-import fr.elecomte.ci.look.data.model.ResultType;
-import fr.elecomte.ci.look.data.model.Tool;
 import fr.elecomte.ci.look.data.model.Project.ProjectGroup;
+import fr.elecomte.ci.look.data.model.ResultType;
+import fr.elecomte.ci.look.data.model.Team;
+import fr.elecomte.ci.look.data.model.Tool;
+import fr.elecomte.ci.look.data.repositories.DeveloperRepository;
 import fr.elecomte.ci.look.data.repositories.ProjectRepository;
+import fr.elecomte.ci.look.data.repositories.TeamRepository;
+import fr.elecomte.ci.look.services.model.DeveloperView;
 import fr.elecomte.ci.look.services.model.ProjectGroupView;
 import fr.elecomte.ci.look.services.model.ProjectRecord;
 import fr.elecomte.ci.look.services.model.ProjectView;
+import fr.elecomte.ci.look.services.model.TeamView;
 
 /**
  * @author elecomte
@@ -35,6 +41,12 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 	private ProjectRepository projects;
 
 	@Autowired
+	private TeamRepository teams;
+
+	@Autowired
+	private DeveloperRepository developers;
+
+	@Autowired
 	private BadgesCache badgesCache;
 
 	/**
@@ -51,11 +63,33 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		Tool tool = getToolForRecord(record);
 		toSave.setProductionTool(tool);
 
+		// A team was specified and must be updated
+		if (toSave.getTeam() != null) {
+			toSave.setTeam(refreshTeam(toSave.getTeam()));
+		}
+
 		// Save or create
 		toSave = refreshProject(toSave);
 
 		// Update all references (caches)
 		markUpdatedProject(toSave);
+	}
+
+	/**
+	 * @param team
+	 * @return
+	 */
+	Team refreshTeam(Team team) {
+
+		// Update each specified developers if required
+		List<Developer> updatedDevelopers = team.getDevelopers().stream().map(this.developers::mergeWithExistingAndSave)
+				.collect(Collectors.toList());
+
+		// Link will be updated from Team update
+		team.setDevelopers(updatedDevelopers);
+
+		// Then the team, which may be identified from the developers
+		return this.teams.mergeWithExistingAndSave(team);
 	}
 
 	/**
@@ -147,6 +181,10 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		view.setInception(project.getInceptionDate());
 		view.setVersion(project.getVersion());
 
+		if (project.getTeam() != null) {
+			view.setTeam(viewFromTeam(project.getTeam()));
+		}
+
 		return view;
 	}
 
@@ -164,6 +202,93 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		project.setInceptionDate(view.getInception());
 		project.setVersion(view.getVersion());
 
+		if (view.getTeam() != null) {
+			project.setTeam(teamFromView(view.getTeam()));
+		}
+
 		return project;
+	}
+
+	/**
+	 * @param view
+	 * @return
+	 */
+	static Developer developerFromView(DeveloperView view) {
+
+		Developer dev = new Developer();
+		dev.setCompanyName(view.getCompanyName());
+		dev.setEmail(view.getEmail());
+		dev.setFullname(view.getFullname());
+		dev.setImageUrl(view.getImageUrl());
+
+		// Generate trigram if possible
+		dev.setTrigram(
+				view.getTrigram() == null && view.getEmail() != null
+						? generateTrigramFromEmail(view.getEmail())
+						: view.getTrigram());
+
+		return dev;
+	}
+
+	/**
+	 * @param dev
+	 * @return
+	 */
+	static DeveloperView viewFromDeveloper(Developer dev) {
+
+		DeveloperView view = new DeveloperView();
+
+		view.setCompanyName(dev.getCompanyName());
+		view.setEmail(dev.getEmail());
+		view.setFullname(dev.getFullname());
+		view.setImageUrl(dev.getImageUrl());
+		view.setTrigram(dev.getTrigram());
+
+		return view;
+	}
+
+	/**
+	 * @param view
+	 * @return
+	 */
+	static Team teamFromView(TeamView view) {
+
+		Team team = new Team();
+
+		team.setName(view.getName());
+		team.setDevelopers(view.getDevelopers().stream().map(ProjectInformationProcess::developerFromView).collect(Collectors.toSet()));
+
+		return team;
+	}
+
+	/**
+	 * @param view
+	 * @return
+	 */
+	static TeamView viewFromTeam(Team team) {
+
+		TeamView view = new TeamView();
+
+		view.setName(team.getName());
+		view.setDevelopers(team.getDevelopers().stream().map(ProjectInformationProcess::viewFromDeveloper).collect(Collectors.toList()));
+
+		return view;
+	}
+
+	/**
+	 * @param email
+	 * @return
+	 */
+	static String generateTrigramFromEmail(String email) {
+		String alias = email.substring(0, email.indexOf('@'));
+
+		int dot = alias.indexOf('.');
+		int len = alias.length();
+
+		if (dot > 0 && len > 3) {
+			return alias.substring(0, 1) + alias.substring(dot, dot + 2);
+		}
+
+		return alias.substring(0, len > 3 ? 2 : len - 1);
 	}
 }
