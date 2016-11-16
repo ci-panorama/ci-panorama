@@ -90,4 +90,38 @@ public class Developer extends LiveCiEntity {
 		this.trigram = trigram;
 	}
 
+	/**
+	 * @return
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
+		return result;
+	}
+
+	/**
+	 * @param obj
+	 * @return
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Developer other = (Developer) obj;
+		if (this.email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!this.email.equals(other.email))
+			return false;
+		return true;
+	}
+
 }

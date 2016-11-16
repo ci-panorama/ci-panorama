@@ -3,6 +3,11 @@ ci-look:
         logo.height: 230
         logo.width: 230
         logo.type: PNG
+    
+    version:
+        id: ${app.build.version}
+        codeName: ${app.build.codeName}
+        build: ${app.build.timestamp}
         
 spring:   
     profiles:

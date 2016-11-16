@@ -20,13 +20,17 @@
 
 	<properties>
 
+		<codename>Horse mustache</codename>
+		
 		<!-- Commons -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<app.build.timestamp>${maven.build.timestamp}</app.build.timestamp>
 		<app.build.stamp><![CDATA[Build of ${project.artifactId} Version ${project.version} - ${app.build.timestamp}]]></app.build.stamp>
-
+		<app.build.version>${project.version}</app.build.version>
+		<app.build.codeName>${codename}</app.build.codeName>
+		
 		<!-- Dependency mgmt Versions -->
 		<dependency.spring-boot.version>1.3.5.RELEASE</dependency.spring-boot.version>
 		<dependency.logback-classic.version>1.1.2</dependency.logback-classic.version>

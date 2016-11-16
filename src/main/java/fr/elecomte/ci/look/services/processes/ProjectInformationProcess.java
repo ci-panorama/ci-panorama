@@ -286,9 +286,9 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		int len = alias.length();
 
 		if (dot > 0 && len > 3) {
-			return alias.substring(0, 1) + alias.substring(dot, dot + 2);
+			return alias.substring(0, 1) + alias.substring(dot+1, dot + 3);
 		}
 
-		return alias.substring(0, len > 3 ? 2 : len - 1);
+		return alias.substring(0, len > 3 ? 3 : len - 1);
 	}
 }
