@@ -1,6 +1,7 @@
 package fr.elecomte.ci.look.data.model;
 
-import static fr.elecomte.ci.look.data.model.ToolFamily.*;
+import static fr.elecomte.ci.look.data.model.ToolFamily.CI;
+import static fr.elecomte.ci.look.data.model.ToolFamily.PRODUCTION;
 
 /**
  * @author elecomte
@@ -38,13 +39,6 @@ public enum ToolType {
 
 	public ToolFamily getFamily() {
 		return this.family;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getResourceLogoPath() {
-		return Resources.LOGO_ROOT + "/" + name().toLowerCase().replaceFirst("_", "/").replaceAll("_", "-") + Resources.FILE_EXT;
 	}
 
 	/**

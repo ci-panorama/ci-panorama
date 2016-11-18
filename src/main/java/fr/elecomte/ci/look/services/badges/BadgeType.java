@@ -3,8 +3,10 @@ package fr.elecomte.ci.look.services.badges;
 import fr.elecomte.ci.look.services.badges.providers.BadgeValueProvider;
 import fr.elecomte.ci.look.services.badges.providers.ProjectVersionProvider;
 import fr.elecomte.ci.look.services.badges.providers.ResultSuccessProvider;
+import fr.elecomte.ci.look.services.badges.providers.SimpleValueProvider;
 import fr.elecomte.ci.look.services.badges.providers.TestResultCountProvider;
 import fr.elecomte.ci.look.services.badges.providers.TestResultEvolutionProvider;
+import fr.elecomte.ci.look.services.badges.providers.ToolLogoProvider;
 
 /**
  * All supported badge types
@@ -20,7 +22,11 @@ public enum BadgeType {
 	TEST_EVOLUTION("test-evolution.svg", new TestResultEvolutionProvider()),
 	VERSION("version.svg", new ProjectVersionProvider()),
 	VERSION_PENDING("version-pending.svg", new ProjectVersionProvider()),
-	VERSION_RELEASED("version-released.svg", new ProjectVersionProvider());
+	VERSION_RELEASED("version-released.svg", new ProjectVersionProvider()),
+	SERVER_VERSION("server-version.svg", new SimpleValueProvider()),
+	SERVER_UPTIME("uptime.svg", new SimpleValueProvider()),
+	SERVER_PROJECT_COUNT("project-count.svg", new SimpleValueProvider()),
+	TOOL_LOGO("logo.svg", new ToolLogoProvider());
 
 	private final String badgeFile;
 	private final BadgeValueProvider<?> provider;

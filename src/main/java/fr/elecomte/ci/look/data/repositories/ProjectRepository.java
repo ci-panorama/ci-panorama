@@ -2,6 +2,8 @@ package fr.elecomte.ci.look.data.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+
 import fr.elecomte.ci.look.data.model.Project;
 import fr.elecomte.ci.look.data.model.Team;
 import fr.elecomte.ci.look.data.model.Project.ProjectGroup;
@@ -74,6 +76,12 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 	Project findFreshProjectWithoutResultType(String codeName, String type);
 
 	/**
+	 * @return
+	 */
+	@Query(value = "select count(distinct code_name) from Project", nativeQuery = true)
+	int countDifferentProjects();
+
+	/**
 	 * @param existingProject
 	 * @param newProject
 	 * @return
@@ -104,12 +112,12 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 			existingProject.setProductionTool(newProject.getProductionTool());
 			modified = true;
 		}
-		
+
 		if (newProject.getTeam() != null && !newProject.getTeam().equals(existingProject.getTeam())) {
 			existingProject.setTeam(newProject.getTeam());
 			modified = true;
 		}
-		
+
 		return modified;
 	}
 

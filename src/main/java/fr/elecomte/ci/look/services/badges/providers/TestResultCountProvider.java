@@ -30,6 +30,11 @@ public class TestResultCountProvider extends BadgeValueProvider<TestResultPayloa
 	@Override
 	public BadgeValue getValue(TestResultPayloadExtract extract) {
 
+		// Avoid missing extract
+		if (extract == null) {
+			return new BadgeValue("pending", BadgeColor.GREY);
+		}
+
 		// Must handle partial / missing payload counts
 
 		// Success cases

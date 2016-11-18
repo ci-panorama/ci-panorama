@@ -257,6 +257,19 @@ Grouped by tool type
 get /services/tools/{anyType} 
 All instances for a specified type
 
+### Technical - Ping server
+get /services/technical/ping
+Health-check answer from the active CI-LOOK instance
+
+### Technical - Server uptime
+get /services/technical/uptime
+Uptime for the active CI-LOOK instance
+
+### Technical - Server version
+get /services/technical/version
+Various version data about the active CI-LOOK instance (version number, build and code name)
+
+
 ## Badges
 
 The badge generator provides various useful badges to insert in your project README. Some are similar to the the standard ones you can put from Travis-CI, drone.io, or from shields.io, some other are more advanced and provides more stuff to illustrate your project.
@@ -325,6 +338,24 @@ For these 3 badges variants, only the fixed semver compliant version is displaye
  * *A released version exists* : ![Released version](docs/version-released.png?raw=true "Released version")
  * *No released version exists* : same with "N/A" value on red background
 
+### CI-LOOK related badges
+These badges provide general information about the running instance of ci-look
+
+**get /badges/server/version.svg** => Display the active ci-look backend version
+
+**Results :** 
+ * *Current version* : ![Current version](docs/server-version.png?raw=true "Current version")
+ 
+**get /badges/server/project-count.svg** => Display the total number of distinct projects information managed in the running instance of ci-look. Ignore the versionned variants for the projects (if project "proj-test" exist in version "1.2.3" and "1.2.4", then only 1 instance of project is counted)
+
+**Results :** 
+ * *Current project count* : ![Current project count](docs/project-count.png?raw=true "Current project count")
+ 
+**get /badges/server/uptime.svg** => Display the uptime of the active ci-look instance
+
+**Results :** 
+ * *Current uptime* : ![Current uptime](docs/uptime.png?raw=true "Current uptime")
+ 
 ### Tool
 TODO. Will display logo of used tools by result / project
 

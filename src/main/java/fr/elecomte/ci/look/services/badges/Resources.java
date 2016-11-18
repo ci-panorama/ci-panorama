@@ -1,4 +1,4 @@
-package fr.elecomte.ci.look.data.model;
+package fr.elecomte.ci.look.services.badges;
 
 /**
  * @author elecomte
@@ -7,5 +7,5 @@ package fr.elecomte.ci.look.data.model;
 public interface Resources {
 
 	String FILE_EXT = ".png";
-	String LOGO_ROOT = "classpath:/logos";
+	String LOGO_ROOT = "logos";
 }

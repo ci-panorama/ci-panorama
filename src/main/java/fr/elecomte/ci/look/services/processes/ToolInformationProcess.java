@@ -47,7 +47,7 @@ public class ToolInformationProcess {
 		ToolGroupView view = new ToolGroupView();
 
 		view.setKnewInstancesCount(toolGroup.getKnewInstancesCount().intValue());
-		view.setType(toolGroup.getType().name() + " " + toolGroup.getType().getResourceLogoPath());
+		view.setType(toolGroup.getType().name());
 
 		return view;
 	}

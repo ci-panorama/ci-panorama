@@ -1,7 +1,7 @@
 ci-look: 
     badges:
-        logo.height: 230
-        logo.width: 230
+        logo.height: 60
+        logo.width: 60
         logo.type: PNG
     
     version:
@@ -21,3 +21,6 @@ spring:
        
     jpa:
         show-sql: false
+        
+    main:
+        banner_mode: "off"

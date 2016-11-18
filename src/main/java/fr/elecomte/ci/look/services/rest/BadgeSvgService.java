@@ -24,6 +24,7 @@ public class BadgeSvgService {
 
 	/**
 	 * @param record
+	 * @return
 	 * @throws ProcessException
 	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/build.svg", method = GET, produces = "image/svg+xml ")
@@ -34,6 +35,18 @@ public class BadgeSvgService {
 
 	/**
 	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/tool-logo.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String toolLogo(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getToolLogoBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @return
 	 * @throws ProcessException
 	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/version.svg", method = GET, produces = "image/svg+xml ")
@@ -44,6 +57,7 @@ public class BadgeSvgService {
 
 	/**
 	 * @param record
+	 * @return
 	 * @throws ProcessException
 	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test.svg", method = GET, produces = "image/svg+xml ")
@@ -54,6 +68,7 @@ public class BadgeSvgService {
 
 	/**
 	 * @param record
+	 * @return
 	 * @throws ProcessException
 	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test-count.svg", method = GET, produces = "image/svg+xml ")
@@ -64,11 +79,42 @@ public class BadgeSvgService {
 
 	/**
 	 * @param record
+	 * @return
 	 * @throws ProcessException
 	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/test-evolution.svg", method = GET, produces = "image/svg+xml ")
 	@ResponseBody
 	public String testEvolution(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
 		return this.badges.getTestEvolutionBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/server/version.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String serverVersion() throws ProcessException {
+		return this.badges.getServerVersionBadge();
+	}
+
+	/**
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/server/project-count.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String serverProjectCount() throws ProcessException {
+		return this.badges.getServerProjectCountBadge();
+	}
+
+	/**
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/server/uptime.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String serverUptime() throws ProcessException {
+		return this.badges.getServerUptimeBadge();
 	}
 }

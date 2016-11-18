@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import fr.elecomte.ci.look.Service.Packages;
 import fr.elecomte.ci.look.Service.ServiceConfiguration;
+import fr.elecomte.ci.look.services.processes.ServerInformation;
 import fr.elecomte.ci.look.services.rest.mappers.JsonPayloadModule;
 import fr.elecomte.ci.look.services.rest.mappers.LocalDateModule;
 import fr.elecomte.ci.look.services.rest.mappers.LocalDateTimeModule;
@@ -60,11 +61,13 @@ public class Service {
 	 */
 	public static void main(String[] args) {
 
-		LOGGER.debug("########### starting CI-LOOK ###########");
+		LOGGER.debug("######################### starting CI-LOOK ############################");
 
-		SpringApplication.run(Service.class, args);
+		ServerInformation server = SpringApplication.run(Service.class, args).getBean(ServerInformation.class);
 
-		LOGGER.info("########### CI-LOOK started ###########");
+		LOGGER.info("CI-LOOK v{} \"{}\", build {}", server.getVersion(), server.getCodeName(), server.getBuild());
+		
+		LOGGER.info("########################### CI-LOOK started ############################");
 	}
 
 	/**

@@ -4,7 +4,7 @@ package fr.elecomte.ci.look.services.processes;
  * @author elecomte
  * @since 0.1.0
  */
-public class ProcessException extends Exception {
+public class ProcessException extends RuntimeException {
 
 	/**
 	 * 

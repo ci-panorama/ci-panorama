@@ -153,6 +153,13 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 	}
 
 	/**
+	 * @return number of distinct projects
+	 */
+	int getProjectsCount() {
+		return this.projects.countDifferentProjects();
+	}
+
+	/**
 	 * @param group
 	 * @return
 	 */
@@ -286,7 +293,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		int len = alias.length();
 
 		if (dot > 0 && len > 3) {
-			return alias.substring(0, 1) + alias.substring(dot+1, dot + 3);
+			return alias.substring(0, 1) + alias.substring(dot + 1, dot + 3);
 		}
 
 		return alias.substring(0, len > 3 ? 3 : len - 1);

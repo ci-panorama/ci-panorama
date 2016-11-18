@@ -23,6 +23,7 @@ import fr.elecomte.ci.look.services.payloads.extracts.DeployResultPayloadExtract
 import fr.elecomte.ci.look.services.payloads.extracts.InstallResultPayloadExtract;
 import fr.elecomte.ci.look.services.payloads.extracts.ResultPayloadExtract;
 import fr.elecomte.ci.look.services.payloads.extracts.TestResultPayloadExtract;
+import fr.elecomte.ci.look.services.processes.ProcessException;
 
 /**
  * @author elecomte
@@ -61,7 +62,7 @@ public class PayloadExtractor {
 	 * @return
 	 * @throws IOException
 	 */
-	public <T extends ResultPayloadExtract> List<T> extractFromResults(List<Result> results) throws IOException {
+	public <T extends ResultPayloadExtract> List<T> extractFromResults(List<Result> results) throws ProcessException {
 
 		List<T> payloads = new ArrayList<>();
 
@@ -82,19 +83,24 @@ public class PayloadExtractor {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends ResultPayloadExtract> T extractFromResult(Result result) throws IOException {
+	public <T extends ResultPayloadExtract> T extractFromResult(Result result) throws ProcessException {
 
-		if (result.getPayload() == null) {
-			LOGGER.debug("No Payload");
-			return null;
+		try {
+			if (result.getPayload() == null) {
+				LOGGER.debug("No Payload");
+				return null;
+			}
+
+			T extract = this.mapper.readValue(result.getPayload(), (Class<T>) RESULT_PAYLOAD_TYPES.get(result.getType()));
+			extract.setAssociatedResult(result);
+
+			LOGGER.debug("Payload of type {} processed from result {}", extract.getClass(), result.getId());
+
+			return extract;
+
+		} catch (IOException ie) {
+			throw new ProcessException("Cannot process payload", ie);
 		}
-
-		T extract = this.mapper.readValue(result.getPayload(), (Class<T>) RESULT_PAYLOAD_TYPES.get(result.getType()));
-		extract.setAssociatedResult(result);
-
-		LOGGER.debug("Payload of type {} processed from result {}", extract.getClass(), result.getId());
-
-		return extract;
 	}
 
 }

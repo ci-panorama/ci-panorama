@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g>
+		<rect ry="5" rx="5" height="70" width="70" y="0" x="0" fill="#fff" stroke-width="1" stroke="#aaa" />
+		<image width="60" height="60" y="5" x="5" xlink:href="${logo}" />
+	</g>
+</svg>
