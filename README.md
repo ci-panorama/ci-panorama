@@ -29,7 +29,7 @@
 
 **Developers for a project ("picture badge")** :
 
-![Developers](docs/Developers.png?raw=true "Developers")
+![Developers](docs/developers.png?raw=true "Developers")
 
 **TODO : more to come, this project is currently work in progress**
 
@@ -350,7 +350,7 @@ These badges display a "trombinoscope" of the specified project team members. If
 **Results :**
  * *Developers exist on the project team with pictures* : 
  
- ![Developers](docs/Developers.png?raw=true "Developers")
+ ![Developers](docs/developers.png?raw=true "Developers")
  * *Developers exist on the project team without pictures* : for each missing picture, a default "anonymous" picture is used
  * *No developer or team for the project* : A "missing person" picture is displayed
 
