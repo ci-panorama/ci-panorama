@@ -226,7 +226,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		dev.setCompanyName(view.getCompanyName());
 		dev.setEmail(view.getEmail());
 		dev.setFullname(view.getFullname());
-		dev.setImageUrl(view.getImageUrl());
+		dev.setImageUrl(view.getImageUrl() != null ? view.getImageUrl().getBytes() : null);
 
 		// Generate trigram if possible
 		dev.setTrigram(
@@ -248,7 +248,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		view.setCompanyName(dev.getCompanyName());
 		view.setEmail(dev.getEmail());
 		view.setFullname(dev.getFullname());
-		view.setImageUrl(dev.getImageUrl());
+		view.setImageUrl(new String(dev.getImageUrl()));
 		view.setTrigram(dev.getTrigram());
 
 		return view;

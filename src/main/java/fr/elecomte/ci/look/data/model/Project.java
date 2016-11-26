@@ -95,7 +95,7 @@ public class Project extends LiveCiEntity {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Repository> repositories;
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@ManyToOne(optional = true, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Team team;
 
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)

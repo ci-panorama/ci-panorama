@@ -1,6 +1,6 @@
 package fr.elecomte.ci.look.services.processes;
 
-import static fr.elecomte.ci.look.services.badges.BadgeType.BUILD;
+import static fr.elecomte.ci.look.services.badges.BadgeType.*;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST_COUNT;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST_EVOLUTION;
@@ -143,6 +143,20 @@ public class BadgeInformationProcess {
 
 		// Get corresponding Project to display version
 		return this.getCacheableProjectBadge(code, version, type, null, proj -> proj);
+	}
+
+	/**
+	 * Get a team overview, if any
+	 * 
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getProjectDevelopersBadge(String code, String version) throws ProcessException {
+
+		return this.getCacheableProjectBadge(code, version, BadgeType.DEVELOPER_LIST, null,
+				proj -> (proj.getTeam() != null) ? proj.getTeam().getDevelopers() : null);
 	}
 
 	/**

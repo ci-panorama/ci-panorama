@@ -89,6 +89,17 @@ public class BadgeSvgService {
 	}
 
 	/**
+	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/developers.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String developers(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getProjectDevelopersBadge(projectCodeName, projectVersion);
+	}
+
+	/**
 	 * @return
 	 * @throws ProcessException
 	 */

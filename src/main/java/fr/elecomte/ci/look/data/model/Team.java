@@ -1,13 +1,13 @@
 package fr.elecomte.ci.look.data.model;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.OneToMany;
 
 /**
  * @author elecomte
@@ -32,11 +32,8 @@ public class Team extends LiveCiEntity {
 	private String name;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Collection<Developer> developers;
+	private Collection<Developer> developers = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private Collection<Project> projects;
-	
 	public String getName() {
 		return this.name;
 	}
@@ -52,19 +49,4 @@ public class Team extends LiveCiEntity {
 	public void setDevelopers(Collection<Developer> developers) {
 		this.developers = developers;
 	}
-
-	/**
-	 * @return the projects
-	 */
-	public Collection<Project> getProjects() {
-		return this.projects;
-	}
-
-	/**
-	 * @param projects the projects to set
-	 */
-	public void setProjects(Collection<Project> projects) {
-		this.projects = projects;
-	}
-
 }

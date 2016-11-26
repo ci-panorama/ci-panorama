@@ -1,6 +1,7 @@
 package fr.elecomte.ci.look.data.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 /**
  * @author elecomte
@@ -17,7 +18,8 @@ public class Developer extends LiveCiEntity {
 
 	private String companyName;
 
-	private String imageUrl;
+	@Lob
+	private byte[] imageUrl;
 
 	/**
 	 * @return
@@ -64,14 +66,14 @@ public class Developer extends LiveCiEntity {
 	/**
 	 * @return
 	 */
-	public String getImageUrl() {
+	public byte[] getImageUrl() {
 		return this.imageUrl;
 	}
 
 	/**
 	 * @param imageUrl
 	 */
-	public void setImageUrl(String imageUrl) {
+	public void setImageUrl(byte[] imageUrl) {
 		this.imageUrl = imageUrl;
 	}
 

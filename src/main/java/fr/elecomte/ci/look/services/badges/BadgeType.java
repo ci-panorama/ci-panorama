@@ -1,6 +1,7 @@
 package fr.elecomte.ci.look.services.badges;
 
 import fr.elecomte.ci.look.services.badges.providers.BadgeValueProvider;
+import fr.elecomte.ci.look.services.badges.providers.DeveloperListProvider;
 import fr.elecomte.ci.look.services.badges.providers.ProjectVersionProvider;
 import fr.elecomte.ci.look.services.badges.providers.ResultSuccessProvider;
 import fr.elecomte.ci.look.services.badges.providers.SimpleValueProvider;
@@ -26,7 +27,8 @@ public enum BadgeType {
 	SERVER_VERSION("server-version.svg", new SimpleValueProvider()),
 	SERVER_UPTIME("uptime.svg", new SimpleValueProvider()),
 	SERVER_PROJECT_COUNT("project-count.svg", new SimpleValueProvider()),
-	TOOL_LOGO("logo.svg", new ToolLogoProvider());
+	TOOL_LOGO("logo.svg", new ToolLogoProvider()),
+	DEVELOPER_LIST("developers.svg", new DeveloperListProvider());
 
 	private final String badgeFile;
 	private final BadgeValueProvider<?> provider;

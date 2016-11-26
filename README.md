@@ -27,6 +27,10 @@
 
 ![Test Evolution](docs/test-evolution.png?raw=true "Test Evolution")
 
+**Developers for a project ("picture badge")** :
+
+![Developers](docs/Developers.png?raw=true "Developers")
+
 **TODO : more to come, this project is currently work in progress**
 
 ## What it CI-LOOK ?
@@ -338,6 +342,18 @@ For these 3 badges variants, only the fixed semver compliant version is displaye
  * *A released version exists* : ![Released version](docs/version-released.png?raw=true "Released version")
  * *No released version exists* : same with "N/A" value on red background
 
+### Developers - pictures of developers for a specified project
+These badges display a "trombinoscope" of the specified project team members. If the project is associated to a team, and if the developers of the team are specified and associated to pictures (all pictures are managed as uri-encoded BASE64 inline images), then an overview of up to 10 members of the team is displayed. 
+
+**get /badges/{projectCode}/released/developers.svg** => corresponding project team members pictures overview
+
+**Results :**
+ * *Developers exist on the project team with pictures* : 
+ 
+ ![Developers](docs/Developers.png?raw=true "Developers")
+ * *Developers exist on the project team without pictures* : for each missing picture, a default "anonymous" picture is used
+ * *No developer or team for the project* : A "missing person" picture is displayed
+
 ### CI-LOOK related badges
 These badges provide general information about the running instance of ci-look
 
@@ -364,6 +380,9 @@ TODO (but yep, it's expected to be one of the badges)
 
 ### Custom badges
 Badges with a DSL 
+
+## Demo Mode
+A demo mode is available. Start app with "demo" profile (TODO : it's a spring profile, a shortcut for easy conf update will be added). With demo mode a set of demo data is automatically included in the app, which starts on an embedded database. All data are dropped once the application is stopped.
 
 ## UI 
 
