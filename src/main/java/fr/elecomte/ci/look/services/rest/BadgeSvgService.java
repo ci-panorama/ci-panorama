@@ -27,6 +27,39 @@ public class BadgeSvgService {
 	 * @return
 	 * @throws ProcessException
 	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/audit.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String audit(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getAuditBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/audit-coverage.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String auditCoverage(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getAuditCoverageBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/audit-ncss.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String auditNcss(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getAuditNcssBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
 	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/build.svg", method = GET, produces = "image/svg+xml ")
 	@ResponseBody
 	public String build(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
@@ -107,6 +140,16 @@ public class BadgeSvgService {
 	@ResponseBody
 	public String serverVersion() throws ProcessException {
 		return this.badges.getServerVersionBadge();
+	}
+
+	/**
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/server/logo.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String serverLogo() throws ProcessException {
+		return this.badges.getServerLogoBadge();
 	}
 
 	/**

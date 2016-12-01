@@ -113,6 +113,47 @@ public class BadgeInformationProcess {
 	 * @return
 	 * @throws ProcessException
 	 */
+	public String getAuditCoverageBadge(String code, String version) throws ProcessException {
+
+		// Get Last AUDIT payload, will display count of coverage in badge
+		return this.getCacheableProjectBadge(code, version, AUDIT_COVERAGE, null,
+				proj -> this.payloadExtractor
+						.extractFromResult(this.results.findFirstByProjectAndTypeOrderByResultTimeDesc(proj, ResultType.AUDIT)));
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getAuditNcssBadge(String code, String version) throws ProcessException {
+
+		// Get Last AUDIT payload, will display count of ncss in badge
+		return this.getCacheableProjectBadge(code, version, AUDIT_NCSS, null,
+				proj -> this.payloadExtractor
+						.extractFromResult(this.results.findFirstByProjectAndTypeOrderByResultTimeDesc(proj, ResultType.AUDIT)));
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getAuditBadge(String code, String version) throws ProcessException {
+
+		// Get Last AUDIT result, will display status in badge
+		return this.getCacheableProjectBadge(code, version, AUDIT, null,
+				proj -> this.results.findFirstByProjectAndTypeOrderByResultTimeDesc(proj, ResultType.AUDIT));
+	}
+
+	/**
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
 	public String getToolLogoBadge(String code, String version) throws ProcessException {
 
 		// Get Project Tool.ToolType to display, if any
@@ -137,6 +178,10 @@ public class BadgeInformationProcess {
 			type = BadgeType.VERSION_PENDING;
 		} else if (version.equals(ProjectInformationProcess.RELEASED_VERSION)) {
 			type = BadgeType.VERSION_RELEASED;
+		} else if (version.equals(ProjectInformationProcess.FRESH_VERSION)) {
+			type = BadgeType.VERSION_FRESH;
+		} else if (version.equals(ProjectInformationProcess.LAST_VERSION)) {
+			type = BadgeType.VERSION_LAST;
 		} else {
 			type = BadgeType.VERSION;
 		}
@@ -185,9 +230,33 @@ public class BadgeInformationProcess {
 	 */
 	public String getServerVersionBadge() throws ProcessException {
 
-		// Not cached. Get server version data
-		return this.badgeGenerator.getBadge(BadgeType.SERVER_VERSION,
-				String.format("%s (\"%s\")", this.server.getVersion(), this.server.getCodeName()));
+		// This one is cached
+		String badge = this.badgesCache.getCachedBadge(ServerInformation.APP_NAME, "-", BadgeType.SERVER_VERSION.name());
+
+		if (badge == null) {
+			badge = this.badgeGenerator.getBadge(BadgeType.SERVER_VERSION,
+					String.format("%s (\"%s\")", this.server.getVersion(), this.server.getCodeName()));
+			this.badgesCache.putCachedBadge(ServerInformation.APP_NAME, "-", BadgeType.SERVER_VERSION.name(), badge);
+		}
+
+		return badge;
+	}
+
+	/**
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getServerLogoBadge() throws ProcessException {
+
+		// This one is cached
+		String badge = this.badgesCache.getCachedBadge(ServerInformation.APP_NAME, "-", BadgeType.SERVER_LOGO.name());
+
+		if (badge == null) {
+			badge = this.badgeGenerator.getBadge(BadgeType.SERVER_LOGO, ServerInformation.APP_NAME);
+			this.badgesCache.putCachedBadge(ServerInformation.APP_NAME, "-", BadgeType.SERVER_LOGO.name(), badge);
+		}
+
+		return badge;
 	}
 
 	/**

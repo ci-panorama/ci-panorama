@@ -145,7 +145,7 @@ The project "result" data type can be :
  * **TEST** : a test set was run (launched from CI tool, from maven ...)
  * **DEPLOY** : the project was deployed in a repository (deploy from CI tool in npm repo, maven repo ...)
  * **INSTALL** : the project was installed on an environment (integration environment by CI, manually launched installation in production from jenkins ...)
- * **AUDIT** : an analysis was ran on the project (covertura, checkstyle, PMD, nexus syntesis ...) 
+ * **AUDIT** : an analysis was ran on the project (global with sonar or custom with covertura, checkstyle, PMD, nexus syntesis ...).  
  * **OTHER** : Whatever you want to specify as a "Result" on your project
  
 ### Result types payloads
@@ -188,6 +188,7 @@ The payload for each result type is actually freely defined, but for clean badge
 
     "payload": {
     	 "ncss": {{Int nbr of Non Commenting Source Statements (NCSS) on the project}},
+       "coverage": {{Int % of code coverage by unit tests on the project, using standard conventions (value between 0 and 100)}},
     	 "violations": [
     	     {
     	        "type": "{{Name of violation type identified on the audit. Multiple violations can be defined}}",

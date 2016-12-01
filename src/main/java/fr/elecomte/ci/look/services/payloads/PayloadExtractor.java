@@ -86,7 +86,7 @@ public class PayloadExtractor {
 	public <T extends ResultPayloadExtract> T extractFromResult(Result result) throws ProcessException {
 
 		try {
-			if (result.getPayload() == null) {
+			if (result == null || result.getPayload() == null) {
 				LOGGER.debug("No Payload");
 				return null;
 			}

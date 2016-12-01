@@ -167,8 +167,8 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 
 		ProjectGroupView view = new ProjectGroupView();
 
-		view.setLast(new ProjectView(group.getCode(), group.getLastVersion()));
-		view.setName(group.getName());
+		view.setLast(new ProjectView(group.getName(), group.getLastVersion()));
+		view.setCode(group.getCode());
 		view.setKnewVersionsCount(group.getKnewVersionsCount().intValue());
 
 		return view;
@@ -187,6 +187,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		view.setDescription(project.getDescription());
 		view.setInception(project.getInceptionDate());
 		view.setVersion(project.getVersion());
+		view.setLanguage(project.getLanguage());
 
 		if (project.getTeam() != null) {
 			view.setTeam(viewFromTeam(project.getTeam()));
@@ -208,7 +209,8 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		project.setDescription(view.getDescription());
 		project.setInceptionDate(view.getInception());
 		project.setVersion(view.getVersion());
-
+		project.setLanguage(view.getLanguage());
+		
 		if (view.getTeam() != null) {
 			project.setTeam(teamFromView(view.getTeam()));
 		}

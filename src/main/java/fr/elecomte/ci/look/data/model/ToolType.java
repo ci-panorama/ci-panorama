@@ -17,6 +17,8 @@ public enum ToolType {
 	PRODUCTION_MAKE(PRODUCTION),
 	PRODUCTION_BUILDR(PRODUCTION),
 	PRODUCTION_SBT(PRODUCTION),
+	PRODUCTION_GRUNT(PRODUCTION),
+	PRODUCTION_NPM(PRODUCTION),
 	PRODUCTION_OTHER(PRODUCTION),
 
 	// CI Tools
@@ -127,6 +129,14 @@ public enum ToolType {
 			return PRODUCTION_BUILDR;
 		}
 
+		if (toolNameVendorName.contains("grunt")) {
+			return PRODUCTION_GRUNT;
+		}
+
+		if (toolNameVendorName.contains("npm")) {
+			return PRODUCTION_NPM;
+		}
+		
 		if (toolNameVendorName.contains("ant")) {
 			return PRODUCTION_ANT;
 		}

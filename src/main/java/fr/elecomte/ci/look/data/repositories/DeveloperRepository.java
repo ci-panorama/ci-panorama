@@ -30,27 +30,27 @@ public interface DeveloperRepository extends LiveCiEntityRepository<Developer> {
 
 		boolean modified = false;
 
-		if (!newDeveloper.getFullname().equals(existingDeveloper.getFullname()) && newDeveloper.getFullname() != null) {
+		if (newDeveloper.getFullname() != null && !newDeveloper.getFullname().equals(existingDeveloper.getFullname())) {
 			existingDeveloper.setFullname(newDeveloper.getFullname());
 			modified = true;
 		}
 
-		if (!newDeveloper.getTrigram().equals(existingDeveloper.getTrigram()) && newDeveloper.getTrigram() != null) {
+		if (newDeveloper.getTrigram() != null && !newDeveloper.getTrigram().equals(existingDeveloper.getTrigram()) ) {
 			existingDeveloper.setTrigram(newDeveloper.getTrigram());
 			modified = true;
 		}
 
-		if (!newDeveloper.getImageUrl().equals(existingDeveloper.getImageUrl()) && newDeveloper.getImageUrl() != null) {
+		if (newDeveloper.getImageUrl() != null && !newDeveloper.getImageUrl().equals(existingDeveloper.getImageUrl()) ) {
 			existingDeveloper.setImageUrl(newDeveloper.getImageUrl());
 			modified = true;
 		}
 
-		if (!newDeveloper.getCompanyName().equals(existingDeveloper.getCompanyName()) && newDeveloper.getCompanyName() != null) {
+		if (newDeveloper.getCompanyName() != null && !newDeveloper.getCompanyName().equals(existingDeveloper.getCompanyName()) ) {
 			existingDeveloper.setCompanyName(newDeveloper.getCompanyName());
 			modified = true;
 		}
 
-		if (!newDeveloper.getEmail().equals(existingDeveloper.getEmail()) && newDeveloper.getEmail() != null) {
+		if (newDeveloper.getEmail() != null && !newDeveloper.getEmail().equals(existingDeveloper.getEmail()) ) {
 			existingDeveloper.setEmail(newDeveloper.getEmail());
 			modified = true;
 		}

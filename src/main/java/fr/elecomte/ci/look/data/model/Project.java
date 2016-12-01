@@ -1,6 +1,7 @@
 package fr.elecomte.ci.look.data.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -89,8 +90,10 @@ public class Project extends LiveCiEntity {
 
 	private Long semverHash;
 
+	private String language;
+
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	private Collection<Result> results;
+	private Collection<Result> results = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Repository> repositories;
@@ -113,6 +116,21 @@ public class Project extends LiveCiEntity {
 	 */
 	public Long getSemverHash() {
 		return this.semverHash;
+	}
+
+	/**
+	 * @return the language
+	 */
+	public String getLanguage() {
+		return this.language;
+	}
+
+	/**
+	 * @param language
+	 *            the language to set
+	 */
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	/**

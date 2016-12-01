@@ -98,6 +98,11 @@ public interface ProjectRepository extends LiveCiEntityRepository<Project> {
 			modified = true;
 		}
 
+		if (newProject.getLanguage() != null && !newProject.getLanguage().equals(existingProject.getLanguage())) {
+			existingProject.setLanguage(newProject.getLanguage());
+			modified = true;
+		}
+
 		if (newProject.getDescription() != null && !newProject.getDescription().equals(existingProject.getDescription())) {
 			existingProject.setDescription(newProject.getDescription());
 			modified = true;

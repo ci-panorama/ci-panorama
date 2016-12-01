@@ -1,5 +1,7 @@
 package fr.elecomte.ci.look.services.badges;
 
+import fr.elecomte.ci.look.services.badges.providers.AuditResultCoverageProvider;
+import fr.elecomte.ci.look.services.badges.providers.AuditResultNcssProvider;
 import fr.elecomte.ci.look.services.badges.providers.BadgeValueProvider;
 import fr.elecomte.ci.look.services.badges.providers.DeveloperListProvider;
 import fr.elecomte.ci.look.services.badges.providers.ProjectVersionProvider;
@@ -24,11 +26,17 @@ public enum BadgeType {
 	VERSION("version.svg", new ProjectVersionProvider()),
 	VERSION_PENDING("version-pending.svg", new ProjectVersionProvider()),
 	VERSION_RELEASED("version-released.svg", new ProjectVersionProvider()),
+	VERSION_FRESH("version-fresh.svg", new ProjectVersionProvider()),
+	VERSION_LAST("version-last.svg", new ProjectVersionProvider()),
 	SERVER_VERSION("server-version.svg", new SimpleValueProvider()),
+	SERVER_LOGO("server-logo.svg", new SimpleValueProvider()),
 	SERVER_UPTIME("uptime.svg", new SimpleValueProvider()),
 	SERVER_PROJECT_COUNT("project-count.svg", new SimpleValueProvider()),
 	TOOL_LOGO("logo.svg", new ToolLogoProvider()),
-	DEVELOPER_LIST("developers.svg", new DeveloperListProvider());
+	DEVELOPER_LIST("developers.svg", new DeveloperListProvider()),
+	AUDIT_COVERAGE("audit-coverage.svg", new AuditResultCoverageProvider()),
+	AUDIT_NCSS("audit-ncss.svg", new AuditResultNcssProvider()),
+	AUDIT("audit.svg", new ResultSuccessProvider());
 
 	private final String badgeFile;
 	private final BadgeValueProvider<?> provider;

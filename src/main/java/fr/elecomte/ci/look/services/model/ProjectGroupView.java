@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ProjectGroupView extends View {
 
 	@JsonInclude(Include.ALWAYS)
-	private String name;
+	private String code;
 
 	@JsonInclude(Include.ALWAYS)
 	private ProjectView last;
@@ -33,19 +33,19 @@ public class ProjectGroupView extends View {
 		this.last = last;
 	}
 
+
 	/**
-	 * @return the name
+	 * @return the code
 	 */
-	public String getName() {
-		return this.name;
+	public String getCode() {
+		return this.code;
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
+	 * @param code the code to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	/**

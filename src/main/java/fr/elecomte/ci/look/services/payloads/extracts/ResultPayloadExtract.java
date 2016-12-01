@@ -1,5 +1,7 @@
 package fr.elecomte.ci.look.services.payloads.extracts;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.elecomte.ci.look.data.model.Result;
 
 /**
@@ -8,6 +10,7 @@ import fr.elecomte.ci.look.data.model.Result;
  */
 public abstract class ResultPayloadExtract extends PayloadExtract {
 
+	@JsonIgnore
 	private Result associatedResult;
 
 	/**

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServerInformation implements ApplicationContextAware {
 
+	// For cache
+	public static final String APP_NAME = "ci-look";
+
 	private long startupTime;
 
 	@Value("${ci-look.version.id}")

@@ -9,6 +9,7 @@ import java.util.List;
  * <pre>
  * "payload": {
  *     "ncss": {{Int nbr of Non Commenting Source Statements (NCSS) on the project}},
+ *     "coverage": {{Int % of code coverage by unit tests on the project, using standard conventions}},
  *     "violations": [
  *          {
  *              "type": "{{Name of violation type identified on the audit. Multiple violations can be defined}}",
@@ -28,6 +29,8 @@ import java.util.List;
 public class AuditResultPayloadExtract extends ResultPayloadExtract {
 
 	private int ncss;
+	
+	private int coverage;
 
 	private List<Violation> violations;
 
@@ -83,6 +86,20 @@ public class AuditResultPayloadExtract extends ResultPayloadExtract {
 	 */
 	public void setDuration(int duration) {
 		this.duration = duration;
+	}
+
+	/**
+	 * @return the coverage
+	 */
+	public int getCoverage() {
+		return this.coverage;
+	}
+
+	/**
+	 * @param coverage the coverage to set
+	 */
+	public void setCoverage(int coverage) {
+		this.coverage = coverage;
 	}
 
 	/**

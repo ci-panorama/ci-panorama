@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class ProjectView extends View {
 
-	@JsonInclude(Include.ALWAYS)
+	@JsonInclude(Include.NON_EMPTY)
 	@NotNull
 	private String code;
 
@@ -30,6 +31,10 @@ public class ProjectView extends View {
 
 	@JsonInclude(Include.NON_EMPTY)
 	private String description;
+
+	@JsonInclude(Include.NON_EMPTY)
+	@Size(max = 10)
+	private String language;
 
 	@JsonInclude(Include.NON_EMPTY)
 	private Collection<RepositoryView> repositories;
@@ -95,6 +100,21 @@ public class ProjectView extends View {
 
 	public void setTeam(TeamView team) {
 		this.team = team;
+	}
+
+	/**
+	 * @return the language
+	 */
+	public String getLanguage() {
+		return this.language;
+	}
+
+	/**
+	 * @param language
+	 *            the language to set
+	 */
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	/**

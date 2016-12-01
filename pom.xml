@@ -47,6 +47,7 @@
 		<dependency.h2.version>1.4.185</dependency.h2.version>
 		<dependency.jsemver.version>0.9.0</dependency.jsemver.version>
 		<dependency.freemarker.version>2.3.25-incubating</dependency.freemarker.version>
+		<dependency.thumbnailator.version>0.4.8</dependency.thumbnailator.version>
 
 		<!-- Plugins versions -->
 		<plugin.spring-boot.version>${dependency.spring-boot.version}</plugin.spring-boot.version>
@@ -261,6 +262,14 @@
 			<artifactId>freemarker</artifactId>
 			<version>${dependency.freemarker.version}</version>
 		</dependency>
+		
+		<!-- Image resize -->
+		<dependency>
+  			<groupId>net.coobird</groupId>
+  			<artifactId>thumbnailator</artifactId>
+  			<version>${dependency.thumbnailator.version}</version>
+		</dependency>
+		
 	</dependencies>
 
 

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.elecomte.ci.look.services.model.ApplicationVersionView;
+import fr.elecomte.ci.look.services.model.CacheDetailsView;
 import fr.elecomte.ci.look.services.processes.ServerInformation;
+import fr.elecomte.ci.look.services.processes.TechnicalProcess;
 
 /**
  * @author elecomte
@@ -20,6 +22,9 @@ public class TechnicalRestService {
 
 	@Autowired
 	private ServerInformation server;
+
+	@Autowired
+	private TechnicalProcess technical;
 
 	/**
 	 * @return
@@ -47,5 +52,23 @@ public class TechnicalRestService {
 	@ResponseBody
 	public String uptime() {
 		return this.server.getFormatedUptime();
+	}
+
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/cache/reset", method = GET)
+	@ResponseBody
+	public void dropCache() {
+		this.technical.clearCache();
+	}
+
+	/**
+	 * @return
+	 */
+	@RequestMapping(value = "/cache/size", method = GET)
+	@ResponseBody
+	public CacheDetailsView cacheSize() {
+		return this.technical.getCacheDetails();
 	}
 }

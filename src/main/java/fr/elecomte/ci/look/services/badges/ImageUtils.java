@@ -1,7 +1,5 @@
 package fr.elecomte.ci.look.services.badges;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,6 +11,7 @@ import javax.imageio.ImageIO;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 
 import fr.elecomte.ci.look.services.processes.ProcessException;
+import net.coobird.thumbnailator.Thumbnails;
 
 /**
  * @author elecomte
@@ -83,7 +82,7 @@ public class ImageUtils {
 	 * @return
 	 */
 	public static String getImageTypeFromBase64Uri(String uri) {
-		
+
 		String[] uriParts = uri.split(URI_TYPE);
 
 		if (uriParts.length != 2) {
@@ -114,13 +113,11 @@ public class ImageUtils {
 	 */
 	public static BufferedImage resizeImage(BufferedImage image, int height, int width) throws ProcessException {
 
-		BufferedImage resized = new BufferedImage(height, width, image.getType());
-		Graphics2D g = resized.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
-		g.dispose();
-
-		return resized;
+		try {
+			return Thumbnails.of(image).forceSize(width, height).asBufferedImage();
+		} catch (IOException e) {
+			throw new ProcessException("Cannot resize", e);
+		}
 	}
 
 }

@@ -1,7 +1,7 @@
 ci-look: 
     badges:
-        logo.height: 60
-        logo.width: 60
+        logo.height: 20
+        logo.width: 73
         logo.type: PNG
     
     version:

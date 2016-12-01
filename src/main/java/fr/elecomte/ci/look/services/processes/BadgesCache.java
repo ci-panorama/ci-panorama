@@ -1,6 +1,5 @@
 package fr.elecomte.ci.look.services.processes;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ public class BadgesCache {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BadgesCache.class);
 
-	private Map<BadgeProjectId, BadgeRepository> projectBadgeRepositories = new HashMap<>();
+	private Map<BadgeProjectId, BadgeRepository> projectBadgeRepositories = new ConcurrentHashMap<>();
 
 	public BadgesCache() {
 
@@ -96,15 +95,22 @@ public class BadgesCache {
 	/**
 	 * @return
 	 */
-	private Integer totalSize() {
+	Integer totalSize() {
 		return this.projectBadgeRepositories.values().stream().collect(Collectors.summingInt(BadgeRepository::size));
 	}
 
 	/**
 	 * @return
 	 */
-	private Integer totalEntriesLengthSum() {
+	Integer totalEntriesLengthSum() {
 		return this.projectBadgeRepositories.values().stream().collect(Collectors.summingInt(BadgeRepository::getEntriesLengthSum));
+	}
+
+	/**
+	 * 
+	 */
+	void dropAll() {
+		this.projectBadgeRepositories.clear();
 	}
 
 	/**
