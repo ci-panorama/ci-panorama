@@ -3,6 +3,7 @@ package fr.elecomte.ci.look.services.processes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.elecomte.ci.look.services.caches.BadgesCache;
 import fr.elecomte.ci.look.services.model.CacheDetailsView;
 
 /**

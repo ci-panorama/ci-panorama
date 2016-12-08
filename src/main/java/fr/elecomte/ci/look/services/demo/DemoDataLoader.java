@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,8 +35,6 @@ import fr.elecomte.ci.look.services.processes.SemverHashGenerator;
  * @author elecomte
  * @since 0.1.0
  */
-@Component
-@Profile("demo")
 public class DemoDataLoader {
 
 	@Autowired
@@ -81,16 +77,26 @@ public class DemoDataLoader {
 
 			Project project1 = project("test", "Project test", "1.2.3", maven, "team", null);
 
-			project1.getTeam().getDevelopers().add(developer("ABC", "Milley Dupond", "mil@email.com", Resources.LOGO_ROOT + "/other/demo-1.png"));
-			project1.getTeam().getDevelopers().add(developer("BBB", "Lara Dupond", "abbbd@email.com", Resources.LOGO_ROOT + "/other/demo-2.png"));
-			project1.getTeam().getDevelopers().add(developer("EEE", "Test Dupond", "assssld@email.com", Resources.LOGO_ROOT + "/other/demo-3.png"));
-			project1.getTeam().getDevelopers().add(developer("ATT", "Arnold Test", "attttd@email.com", Resources.LOGO_ROOT + "/other/demo-4.png"));
-			project1.getTeam().getDevelopers().add(developer("TTT", "Gerard Menvu", "testld@email.com", Resources.LOGO_ROOT + "/other/demo-5.png"));
-			project1.getTeam().getDevelopers().add(developer("RRR", "Cal Cal", "arnrtt@testemail.com", Resources.LOGO_ROOT + "/other/demo-6.png"));
-			project1.getTeam().getDevelopers().add(developer("VVV", "Test Test", "arrrtttd@email.com", Resources.LOGO_ROOT + "/other/demo-7.png"));
-			project1.getTeam().getDevelopers().add(developer("GTY", "Pierre Dupond", "arnold@email.com", Resources.LOGO_ROOT + "/other/demo-8.png"));
-			project1.getTeam().getDevelopers().add(developer("ELE", "Yves Truis", "ytruis@test.com", Resources.LOGO_ROOT + "/other/demo-9.png"));
-			project1.getTeam().getDevelopers().add(developer("IBU", "Anna Paula", "anna@testtest.com", Resources.LOGO_ROOT + "/other/demo-10.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("ABC", "Milley Dupond", "mil@email.com", Resources.LOGO_ROOT + "/other/demo-1.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("BBB", "Lara Dupond", "abbbd@email.com", Resources.LOGO_ROOT + "/other/demo-2.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("EEE", "Test Dupond", "assssld@email.com", Resources.LOGO_ROOT + "/other/demo-3.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("ATT", "Arnold Test", "attttd@email.com", Resources.LOGO_ROOT + "/other/demo-4.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("TTT", "Gerard Menvu", "testld@email.com", Resources.LOGO_ROOT + "/other/demo-5.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("RRR", "Cal Cal", "arnrtt@testemail.com", Resources.LOGO_ROOT + "/other/demo-6.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("VVV", "Test Test", "arrrtttd@email.com", Resources.LOGO_ROOT + "/other/demo-7.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("GTY", "Pierre Dupond", "arnold@email.com", Resources.LOGO_ROOT + "/other/demo-8.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("ELE", "Yves Truis", "ytruis@test.com", Resources.LOGO_ROOT + "/other/demo-9.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("IBU", "Anna Paula", "anna@testtest.com", Resources.LOGO_ROOT + "/other/demo-10.png"));
 
 			this.teams.mergeWithExistingAndSave(project1.getTeam());
 			this.projects.mergeWithExistingAndSave(project1);
@@ -112,14 +118,15 @@ public class DemoDataLoader {
 			this.projects.mergeWithExistingAndSave(project("test", null, "1.2.4", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("test", null, "2.0.0-alpha", maven, null, "java"));
 			this.projects.mergeWithExistingAndSave(project("test", null, "1.2.5", maven, null, null));
-			
-			// Project 2 
+
+			// Project 2
 
 			Project project2 = project("demo", null, "7.0.3", grunt, "The web dev warriors", "javascript");
 
 			project2.getTeam().getDevelopers().add(developer("GGG", "Paul Altaruis", "popol@testemail.com", null));
 			project2.getTeam().getDevelopers().add(developer("BBB", "Lara Dupond", "abbbd@email.com", null));
-			project2.getTeam().getDevelopers().add(developer("RRR", "Cal Cal", "arnrtt@testemail.com", Resources.LOGO_ROOT + "/other/demo-6.png"));
+			project2.getTeam().getDevelopers()
+					.add(developer("RRR", "Cal Cal", "arnrtt@testemail.com", Resources.LOGO_ROOT + "/other/demo-6.png"));
 			project2.getTeam().getDevelopers().add(developer("LLL", "Louis Louis", "lllloooolll@testemail.com", null));
 
 			this.teams.mergeWithExistingAndSave(project2.getTeam());
@@ -141,7 +148,8 @@ public class DemoDataLoader {
 
 			// Project 2 variations
 			this.projects.mergeWithExistingAndSave(project("demo", null, "7.0.5", grunt, null, null));
-			this.projects.mergeWithExistingAndSave(project("demo", null, "7.0.6", tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), null, null));
+			this.projects.mergeWithExistingAndSave(
+					project("demo", null, "7.0.6", tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), null, null));
 		}
 	}
 
@@ -161,7 +169,7 @@ public class DemoDataLoader {
 		project.setVersion(version);
 		project.setSemverHash(this.svhg.hashVersion(version));
 		project.setLanguage(language);
-		
+
 		project.setProductionTool(tool);
 
 		if (teamName != null) {
@@ -279,4 +287,5 @@ public class DemoDataLoader {
 	private String generateResultPayload(ResultPayloadExtract extract) throws JsonProcessingException {
 		return this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(extract);
 	}
+
 }

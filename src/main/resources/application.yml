@@ -1,3 +1,5 @@
+---
+## CI-LOOK CONFIG
 ci-look: 
     badges:
         logo.height: 20
@@ -8,6 +10,20 @@ ci-look:
         id: ${app.build.version}
         codeName: ${app.build.codeName}
         build: ${app.build.timestamp}
+        
+    ## TODO : use instead of spring profiles    
+    options:
+        demo-data: true
+        h2console: true
+        swagger: true
+    
+    ## Cache type between "compressed", "default", "none"
+    badges-cache:
+        type: "compressed"
+        
+    ## IDEAS FOR CLI
+    cli:
+        cat-enabled: true
         
 spring:   
     profiles:

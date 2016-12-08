@@ -1,6 +1,9 @@
 package fr.elecomte.ci.look.services.processes;
 
-import static fr.elecomte.ci.look.services.badges.BadgeType.*;
+import static fr.elecomte.ci.look.services.badges.BadgeType.AUDIT;
+import static fr.elecomte.ci.look.services.badges.BadgeType.AUDIT_COVERAGE;
+import static fr.elecomte.ci.look.services.badges.BadgeType.AUDIT_NCSS;
+import static fr.elecomte.ci.look.services.badges.BadgeType.BUILD;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST_COUNT;
 import static fr.elecomte.ci.look.services.badges.BadgeType.TEST_EVOLUTION;
@@ -21,6 +24,7 @@ import fr.elecomte.ci.look.data.model.ToolType;
 import fr.elecomte.ci.look.data.repositories.ResultRepository;
 import fr.elecomte.ci.look.services.badges.BadgeType;
 import fr.elecomte.ci.look.services.badges.BadgesGenerator;
+import fr.elecomte.ci.look.services.caches.BadgesCache;
 import fr.elecomte.ci.look.services.payloads.PayloadExtractor;
 
 /**

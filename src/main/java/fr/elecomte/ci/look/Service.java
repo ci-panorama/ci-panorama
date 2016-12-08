@@ -9,14 +9,18 @@ import org.h2.server.web.WebServer;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -31,6 +35,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import fr.elecomte.ci.look.Service.Packages;
 import fr.elecomte.ci.look.Service.ServiceConfiguration;
+import fr.elecomte.ci.look.services.caches.BadgesCache;
+import fr.elecomte.ci.look.services.caches.DefaultBadgesCache;
+import fr.elecomte.ci.look.services.caches.OnTheFlyLz4BadgesCache;
+import fr.elecomte.ci.look.services.demo.DemoDataLoader;
 import fr.elecomte.ci.look.services.processes.ServerInformation;
 import fr.elecomte.ci.look.services.rest.mappers.JsonPayloadModule;
 import fr.elecomte.ci.look.services.rest.mappers.LocalDateModule;
@@ -66,7 +74,7 @@ public class Service {
 		ServerInformation server = SpringApplication.run(Service.class, args).getBean(ServerInformation.class);
 
 		LOGGER.info("CI-LOOK v{} \"{}\", build {}", server.getVersion(), server.getCodeName(), server.getBuild());
-		
+
 		LOGGER.info("########################### CI-LOOK started ############################");
 	}
 
@@ -77,11 +85,16 @@ public class Service {
 	@Configuration
 	public static class ServiceConfiguration extends WebMvcConfigurerAdapter {
 
+		@Value("${ci-look.badges-cache.type}")
+		private String badgesCacheType;
+
+		/* ######################### OPTIONS ######################### */
+
 		/**
 		 * @return
 		 */
 		@Bean
-		@Profile(Profiles.SWAGGER_UI)
+		@Conditional(SwaggerCondition.class)
 		public Docket swaggerApi() {
 			LOGGER.info("SWAGGER UI activated");
 			return new Docket(DocumentationType.SWAGGER_2)
@@ -98,10 +111,40 @@ public class Service {
 		 * @throws SQLException
 		 */
 		@Bean(initMethod = "start", destroyMethod = "stop")
-		@Profile(Profiles.H2_CONSOLE)
+		@Conditional(H2ConsoleCondition.class)
 		public Server h2WebConsole() throws SQLException {
 			LOGGER.info("H2 CONSOLE activated");
 			return new Server(new WebServer(), "-web", "-webAllowOthers", "-webPort", "8082");
+		}
+
+		/**
+		 * @return
+		 */
+		@Bean
+		@Conditional(DemoCondition.class)
+		public DemoDataLoader demoDataLoader() {
+			return new DemoDataLoader();
+		}
+
+		/* ######################### FEATURES ######################### */
+
+		/**
+		 * @return cache of configured type
+		 */
+		@Bean
+		public BadgesCache badgesCache() {
+
+			switch (this.badgesCacheType) {
+			case "compressed":
+			case "lz4":
+				return new OnTheFlyLz4BadgesCache();
+			case "none":
+			case "disabled":
+				return BadgesCache.DISABLED;
+			case "default":
+			default:
+				return new DefaultBadgesCache();
+			}
 		}
 
 		/**
@@ -161,6 +204,69 @@ public class Service {
 		}
 	}
 
+	/**
+	 * Matcher for enabled H2Console option
+	 * 
+	 * @author elecomte
+	 * @since 0.1.0
+	 */
+	public static class H2ConsoleCondition extends OptionCondition {
+
+		@Override
+		protected String getOptionParam() {
+			return "h2console";
+		}
+	}
+
+	/**
+	 * Matcher for enabled Swagger option
+	 * 
+	 * @author elecomte
+	 * @since 0.1.0
+	 */
+	public static class SwaggerCondition extends OptionCondition {
+
+		@Override
+		protected String getOptionParam() {
+			return "swagger";
+		}
+	}
+
+	/**
+	 * Matcher for enabled demo option
+	 * 
+	 * @author elecomte
+	 * @since 0.1.0
+	 */
+	public static class DemoCondition extends OptionCondition {
+
+		@Override
+		protected String getOptionParam() {
+			return "demo-data";
+		}
+	}
+
+	/**
+	 * @author elecomte
+	 * @since 0.1.0
+	 */
+	public static abstract class OptionCondition implements Condition {
+
+		// TODO : Use spring-boot @ContionalOnExpression instead
+
+		public static final String OPTIONS_KEY_PART = "ci-look.options.";
+
+		@Override
+		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+			return context.getEnvironment().getProperty(OPTIONS_KEY_PART + getOptionParam()).equals(Boolean.TRUE);
+		}
+
+		/**
+		 * @return option param key bellow "ci-look.options."
+		 */
+		protected abstract String getOptionParam();
+	}
+
 	static interface Packages {
 		String ROOT = "fr.elecomte.ci.look";
 		String JPA_REPOSITORIES = ROOT + ".data.repositories";
@@ -169,8 +275,4 @@ public class Service {
 		String REST = ROOT + ".services.rest";
 	}
 
-	static interface Profiles {
-		String H2_CONSOLE = "h2console";
-		String SWAGGER_UI = "swagger";
-	}
 }

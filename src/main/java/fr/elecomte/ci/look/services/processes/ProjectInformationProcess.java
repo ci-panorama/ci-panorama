@@ -17,6 +17,7 @@ import fr.elecomte.ci.look.data.model.Tool;
 import fr.elecomte.ci.look.data.repositories.DeveloperRepository;
 import fr.elecomte.ci.look.data.repositories.ProjectRepository;
 import fr.elecomte.ci.look.data.repositories.TeamRepository;
+import fr.elecomte.ci.look.services.caches.BadgesCache;
 import fr.elecomte.ci.look.services.model.DeveloperView;
 import fr.elecomte.ci.look.services.model.ProjectGroupView;
 import fr.elecomte.ci.look.services.model.ProjectRecord;

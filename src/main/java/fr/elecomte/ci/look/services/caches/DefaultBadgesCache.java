@@ -1,4 +1,4 @@
-package fr.elecomte.ci.look.services.processes;
+package fr.elecomte.ci.look.services.caches;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,20 +6,18 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * @author elecomte
  * @since 0.1.0
  */
-@Component
-public class BadgesCache {
+public class DefaultBadgesCache implements BadgesCache {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BadgesCache.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultBadgesCache.class);
 
 	private Map<BadgeProjectId, BadgeRepository> projectBadgeRepositories = new ConcurrentHashMap<>();
 
-	public BadgesCache() {
+	public DefaultBadgesCache() {
 
 	}
 
@@ -27,7 +25,8 @@ public class BadgesCache {
 	 * @param projectCode
 	 * @param projectVersion
 	 */
-	void dropCache(String projectCode, String projectVersion) {
+	@Override
+	public void dropCache(String projectCode, String projectVersion) {
 
 		LOGGER.debug("Drop from cache everything for project {}/{}", projectCode, projectVersion);
 
@@ -40,7 +39,8 @@ public class BadgesCache {
 	 * @param badgeIdentifier
 	 * @return
 	 */
-	String getCachedBadge(String projectCode, String projectVersion, String badgeIdentifier) {
+	@Override
+	public String getCachedBadge(String projectCode, String projectVersion, String badgeIdentifier) {
 
 		BadgeProjectId id = new BadgeProjectId(projectCode, projectVersion);
 
@@ -71,7 +71,8 @@ public class BadgesCache {
 	 * @param badgeIdentifier
 	 * @param badge
 	 */
-	void putCachedBadge(String projectCode, String projectVersion, String badgeIdentifier, String badge) {
+	@Override
+	public void putCachedBadge(String projectCode, String projectVersion, String badgeIdentifier, String badge) {
 
 		BadgeProjectId id = new BadgeProjectId(projectCode, projectVersion);
 
@@ -95,21 +96,24 @@ public class BadgesCache {
 	/**
 	 * @return
 	 */
-	Integer totalSize() {
+	@Override
+	public Integer totalSize() {
 		return this.projectBadgeRepositories.values().stream().collect(Collectors.summingInt(BadgeRepository::size));
 	}
 
 	/**
 	 * @return
 	 */
-	Integer totalEntriesLengthSum() {
+	@Override
+	public Integer totalEntriesLengthSum() {
 		return this.projectBadgeRepositories.values().stream().collect(Collectors.summingInt(BadgeRepository::getEntriesLengthSum));
 	}
 
 	/**
 	 * 
 	 */
-	void dropAll() {
+	@Override
+	public void dropAll() {
 		this.projectBadgeRepositories.clear();
 	}
 
