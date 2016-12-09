@@ -1,5 +1,7 @@
 # CI-LOOK : a project CI information holder
 
+[![Travis CI Build Status](https://travis-ci.org/manuito/ci-look.svg)](https://travis-ci.org/manuito/ci-look)
+
 *This project is currently work in progress.*
 
 ## TL;DR :

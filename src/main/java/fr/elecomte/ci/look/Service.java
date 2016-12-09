@@ -137,12 +137,15 @@ public class Service {
 			switch (this.badgesCacheType) {
 			case "compressed":
 			case "lz4":
+				LOGGER.info("Using a LZ4 compressed badge caching model");
 				return new OnTheFlyLz4BadgesCache();
 			case "none":
 			case "disabled":
+				LOGGER.info("Badge caching is disabled");
 				return BadgesCache.DISABLED;
 			case "default":
 			default:
+				LOGGER.info("Using default badge caching model");
 				return new DefaultBadgesCache();
 			}
 		}
@@ -171,20 +174,20 @@ public class Service {
 		@Override
 		public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
-			// http
+			// String
 			StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
 			converters.add(stringConverter);
 
-			// string
+			// HTTP form
 			FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
 			converters.add(formConverter);
 
-			// json
+			// JSON
 			MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
 			converters.add(jsonConverter);
 			setModules(jsonConverter.getObjectMapper());
 
-			// xml
+			// XML
 			MappingJackson2XmlHttpMessageConverter xmlConverter = new MappingJackson2XmlHttpMessageConverter();
 			converters.add(xmlConverter);
 			setModules(xmlConverter.getObjectMapper());
