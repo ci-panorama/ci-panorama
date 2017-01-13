@@ -12,15 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -94,7 +91,7 @@ public class Service {
 		 * @return
 		 */
 		@Bean
-		@Conditional(SwaggerCondition.class)
+		@ConditionalOnProperty(name = "ci-look.options.swagger", havingValue = "true")
 		public Docket swaggerApi() {
 			LOGGER.info("SWAGGER UI activated");
 			return new Docket(DocumentationType.SWAGGER_2)
@@ -111,7 +108,7 @@ public class Service {
 		 * @throws SQLException
 		 */
 		@Bean(initMethod = "start", destroyMethod = "stop")
-		@Conditional(H2ConsoleCondition.class)
+		@ConditionalOnProperty(name = "ci-look.options.h2console", havingValue = "true")
 		public Server h2WebConsole() throws SQLException {
 			LOGGER.info("H2 CONSOLE activated");
 			return new Server(new WebServer(), "-web", "-webAllowOthers", "-webPort", "8082");
@@ -121,7 +118,7 @@ public class Service {
 		 * @return
 		 */
 		@Bean
-		@Conditional(DemoCondition.class)
+		@ConditionalOnProperty(name = "ci-look.options.demo-data", havingValue = "true")
 		public DemoDataLoader demoDataLoader() {
 			return new DemoDataLoader();
 		}
@@ -205,69 +202,6 @@ public class Service {
 
 			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		}
-	}
-
-	/**
-	 * Matcher for enabled H2Console option
-	 * 
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class H2ConsoleCondition extends OptionCondition {
-
-		@Override
-		protected String getOptionParam() {
-			return "h2console";
-		}
-	}
-
-	/**
-	 * Matcher for enabled Swagger option
-	 * 
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class SwaggerCondition extends OptionCondition {
-
-		@Override
-		protected String getOptionParam() {
-			return "swagger";
-		}
-	}
-
-	/**
-	 * Matcher for enabled demo option
-	 * 
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static class DemoCondition extends OptionCondition {
-
-		@Override
-		protected String getOptionParam() {
-			return "demo-data";
-		}
-	}
-
-	/**
-	 * @author elecomte
-	 * @since 0.1.0
-	 */
-	public static abstract class OptionCondition implements Condition {
-
-		// TODO : Use spring-boot @ContionalOnExpression instead
-
-		public static final String OPTIONS_KEY_PART = "ci-look.options.";
-
-		@Override
-		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			return context.getEnvironment().getProperty(OPTIONS_KEY_PART + getOptionParam()).equals(Boolean.TRUE);
-		}
-
-		/**
-		 * @return option param key bellow "ci-look.options."
-		 */
-		protected abstract String getOptionParam();
 	}
 
 	static interface Packages {
