@@ -7,11 +7,11 @@
 		<maven>3.0.4</maven>
 	</prerequisites>
 
-	<groupId>fr.elecomte.ci</groupId>
-	<artifactId>ci-look-services</artifactId>
+	<groupId>fr.elecomte</groupId>
+	<artifactId>panorama-services</artifactId>
 	<packaging>jar</packaging>
 
-	<name>ci-look</name>
+	<name>panorama</name>
 	<description><![CDATA[ CI data simple holder ]]></description>
 	<inceptionYear>2016</inceptionYear>
 
@@ -100,7 +100,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${plugin.spring-boot.version}</version>
 				<configuration>
-					<mainClass>fr.elecomte.ci.look.Service</mainClass>
+					<mainClass>fr.elecomte.panorama.Service</mainClass>
 				</configuration>
 			</plugin>
 

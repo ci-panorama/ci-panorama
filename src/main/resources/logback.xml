@@ -7,8 +7,8 @@
 		</encoder>
 	</appender>
     
-	<logger name="fr.elecomte.ci.look" additivity="false">
-		<level value="DEBUG" />
+	<logger name="fr.elecomte.ci.panorama" additivity="false">
+		<level value="INFO" />
 		<appender-ref ref="STDOUT" />
 	</logger>
 

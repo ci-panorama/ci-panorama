@@ -1,6 +1,6 @@
 ---
-## CI-LOOK CONFIG
-ci-look: 
+## PANORAMA CONFIG
+panorama: 
     badges:
         logo.height: 20
         logo.width: 73
@@ -37,6 +37,3 @@ spring:
        
     jpa:
         show-sql: false
-        
-    main:
-        banner_mode: "off"

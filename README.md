@@ -1,4 +1,6 @@
-# CI-LOOK : a project CI information holder
+![panorama](docs/panorama.png)
+
+# panorama : a project CI information holder
 
 [![Travis CI Build Status](https://travis-ci.org/manuito/ci-look.svg)](https://travis-ci.org/manuito/ci-look)
 
@@ -35,10 +37,10 @@
 
 **TODO : more to come, this project is currently work in progress**
 
-## What it CI-LOOK ?
-CI-LOOK is a basic stand-alone repository providing data about your projects and on every build, test, deployment, analysis you want to handle and share. It is currently built in Java.
+## What it panorama ?
+Panorama is a basic stand-alone repository providing data about your projects and on every build, test, deployment, analysis you want to handle and share. It is currently built in Java.
 
-All features are managed through a simple REST API, intended to be used from your existing CI / build tools, and can be queried for quick access on any important data. CI-LOOK includes a fixed data model for project definition, and process some basic data analysis to always manage only the most important and the up-to-date details on your project and everything around it.
+All features are managed through a simple REST API, intended to be used from your existing CI / build tools, and can be queried for quick access on any important data. Panorama includes a fixed data model for project definition, and process some basic data analysis to always manage only the most important and the up-to-date details on your project and everything around it.
 
 The API can be used from any CURL like tool, from your CI tools using standard "REST call" plugins, or from dedicated / specialized integration plugins.
 
@@ -52,25 +54,25 @@ A badges generator is also included, allowing you to add in your project descrip
 ## Why a new tool ? With all the CI stuff I already need to use ...
 Yep, to build nicely your project you may already have various different tools, some installed locally, if you manage your own environment, some cloud-based... Each of these tools may have needed various config, management ... You may have needed a lot of time to install everything ...
 
-*So, OK, CI-LOOK is supposed to be added to your CI stack, but ...*
+*So, OK, Panorama is supposed to be added to your CI stack, but ...*
 
 ### It covers something missing in various CI environments
-I created CI-LOOK because I wanted to add fun badges to our projects README, but as we are using a private CI environment, it is very difficult to have something similar to a Github based project. And for each tool, you have to integrate the specific badges for all of your needs. 
-With CI-LOOK, all badges came from one location only, on a application you can install in your own environment.
+I created panorama because I wanted to add fun badges to some project README pages, but as I am using a private CI environment, it is very difficult to have something similar to a Github based project. And for each tool, you have to integrate the specific badges for all of your needs. 
+With panorama, all badges came from one location only, on a application you can install in your own environment.
 
-In the same time, I wanted to provide a centralised "mvn site" repository for our java projects : a server where the generated sites are located and easily acceded. But it seems that no one do that anymore, and there is no basic solution for that. I needed only basic test results (because we don't have Jenkins anymore, you have to manage yourself the test result agregate), a quick overview on each project teams, maybe a PMD analysis result. Actually, CI-LOOK can manage these datas for you : the teams details, the tests results, the analysis results are some of the various information handle by CI-LOOK. And because the aggregation model is able to "complete" any existing project information with any new data it process, the sources for these datas can be various : from your onw mvn instance, to a build server. 
+In the same time, I wanted to provide a centralized "mvn site" repository for our java projects : a server where the generated sites are located and easily acceded. But it seems that no one do that anymore, and there is no basic solution for that. I needed only basic test results (because we don't have Jenkins anymore, you have to manage yourself the test result aggregate), a quick overview on each project teams, maybe a PMD analysis result. Actually, panorama can manage these data for you : the teams details, the tests results, the analysis results are some of the various information handle by panorama. And because the aggregation model is able to "complete" any existing project information with any new data it process, the sources for these data can be various : from your own mvn instance, to a build server. 
 
-And because the integration is done through simple rest services, data can be read / pushed from almost every existing or futur tools : just add Rest call, or use dedicated plugin, and that's it
+And because the integration is done through simple rest services, data can be read / pushed from almost every existing or future tools : just add Rest call, or use dedicated plugin, and that's it.
 
 ### It is limited to one aspect of the CI, nothing more, because that's enough
-CI-LOOK is not a build tool, nor a wiki or a SCM. It's only a manager of some data useful for providing quick overview on your CI process. It will never try to do more that.
+Panorama is not a build tool, nor a wiki or a SCM. It's only a manager of some data useful for providing quick overview on your CI process. It will never try to do more that.
 
 The data model is optimized for these needs only, and even if  more kind of data may be added in further releases, the data model from the first v0 is already enough for most of the CI use-cases. 
 
 ### It open your imagination for your CI overview
-You have seen some example of big screen with an overview on all the last build, test fealures, with the picture of the developer who have broken the build in big ? And you dream to add that in your small team, but have no time to code every data integration you need ?
+You have seen some example of big screen with an overview on all the last build, test features, with the picture of the developer who have broken the build in big ? And you dream to add that in your small team, but have no time to code every data integration you need ?
 
-Here, that's it, you have now already all the data management. You just need to install CI-LOOK, push data on it from your tools, and create your own UI as you wish. And for this UI, you can directly use the badges (some are not "standard" badges ...) and have most of the information you want in few minutes.
+Here, that's it, you have now already all the data management. You just need to install panorama, push data on it from your tools, and create your own UI as you wish. And for this UI, you can directly use the badges (some are not "standard" badges ...) and have most of the information you want in few minutes.
 
 ### It's easy to install. 
 Find a small CPU, a few 100Mb of memories, maybe a db (maybe : you can use it without any db), launch it, that's it. If you use Docker you will have nothing to add to configuration.
@@ -79,21 +81,21 @@ Find a small CPU, a few 100Mb of memories, maybe a db (maybe : you can use it wi
 
 **The expected improvements to come are :**
  * The project is currently *work in progress*. The missing "core features" for now are : Badges on test, deploy, more build scope, manage Team / repository data, processing of custom payload in Result data, improved spring config, clean database management, Dockerfile
- * Create basic integration plugin to CI-LOOK for some standard tools. I can work on a maven plugin, a Jenkins plugin, and a Drone.io plugin. Every hep is welcome for these task or for other plugins
- * Add more badges. Badges are svg templates, and are very easy to add to the CI-LOOK core. A DSL will be added later to help create own customised badges from any required data
+ * Create basic integration plugin to panorama for some standard tools. I can work on a maven plugin, a Jenkins plugin, and a Drone.io plugin. Every hep is welcome for these task or for other plugins
+ * Add more badges. Badges are svg templates, and are very easy to add to the panorama core. A DSL will be added later to help create own customized badges from any required data
  * Add customization features on the UI and on the badge generation. The idea is to give you the ability to handle the "payload" data from Result and use it in badge generation. Some payload models will be already provided (for example, to count the number of failed test, the covertura coverage ...)
- * An Oauth2 authentication feature when you want to manage CI-LOOK in a public domain.
- * The technical *solution* may evolve also : Built with SpringBoot, CI-LOOK may migrate to another solution, possibly GO. 
+ * An Oauth2 authentication feature when you want to manage panorama in a public domain.
+ * The technical *solution* may evolve also : Built with SpringBoot, panorama may migrate to another solution, possibly GO. 
  * Add GET-URI based update for some data, to allow basic webhook support (for example for the "release" result, which can be managed from Github or Bitbucket once a merge is done on master branch)
  
 **These evolution objectives will try to avoid to include :**
- * A plugin system. You already handle enought plugins, CI-LOOK will handle a customization feature for UI and badges, but that's all. More features will add more complexity and it's not the idea here.
- * An advanced security system. The managed data are not critical, and CI-LOOK is mostly conceved for private environment. So, except the authentication system, no right, profile, or group management will be added
+ * A plugin system. You already handle enought plugins, panorama will handle a customization feature for UI and badges, but that's all. More features will add more complexity and it's not the idea here.
+ * An advanced security system. The managed data are not critical, and panorama is mostly conceived for private environment. So, except the authentication system, no right, profile, or group management will be added
 
 ### It's not a "new" idea
-Actually, everything CI-LOOK does was mainly existing in various tools, even in technology solutions created many years ago. But your CI environment may not have all of these tools, or was "improved" and now doesn't have anymore a tool able to handle one part of your project information. So here CI-LOOK may help :
+Actually, everything panorama does was mainly existing in various tools, even in technology solutions created many years ago. But your CI environment may not have all of these tools, or was "improved" and now doesn't have anymore a tool able to handle one part of your project information. So here panorama may help :
  * It manage all the basic project information like many other tools do. But with consistency and in one place : you don't have to get it from elsewhere
- * The information is managed with an objective of human readibility. The services are not supposed to provides data to other tools : they are optimized for UI / CLI needs, so, for direct use by an user.
+ * The information is managed with an objective of human readability. The services are not supposed to provides data to other tools : they are optimized for UI / CLI needs, so, for direct use by an user.
 
 
 
@@ -102,7 +104,7 @@ Actually, everything CI-LOOK does was mainly existing in various tools, even in 
 ## Datamodel
 
 Here an overview on the datamodel :
-![CI-LOOK datamodel](docs/model.png?raw=true "CI-LOOK datamodel")
+![panorama datamodel](docs/model.png?raw=true "panorama datamodel")
 
 ### Content
 The managed datamodel is :
@@ -153,7 +155,7 @@ The project "result" data type can be :
 ### Result types payloads
 The payload for each result type is actually freely defined, but for clean badge and report display, some dedicated models are specified and should be used. 
 
-**All properties are actually optional** : Badge generation will try to use whatever is present. Any properties are allowed for the payload contents, and will saved in the project Result Datamodel, but only default payload models will be used for badges / metrics.
+**All properties are actually optional** : Badge generation will try to use whatever is present. Any properties are allowed for the payload contents, and will be saved in the project Result Datamodel, but only the default payload models will be used for badges / metrics.
 
 **For TEST result :**
 
@@ -163,7 +165,13 @@ The payload for each result type is actually freely defined, but for clean badge
        "failed": {{int nbr of tests failed}},  
        "duration": {{int nbr of seconds for test set execution}}
     }
- 
+    
+**For RELEASE result :**
+
+    "payload": {
+       "until": {{int nbr of expected support duration}}
+    }
+     
 **For BUILD result :**
 
     "payload": {
@@ -266,15 +274,15 @@ All instances for a specified type
 
 ### Technical - Ping server
 get /services/technical/ping
-Health-check answer from the active CI-LOOK instance
+Health-check answer from the active panorama instance
 
 ### Technical - Server uptime
 get /services/technical/uptime
-Uptime for the active CI-LOOK instance
+Uptime for the active panorama instance
 
 ### Technical - Server version
 get /services/technical/version
-Various version data about the active CI-LOOK instance (version number, build and code name)
+Various version data about the active panorama instance (version number, build and code name)
 
 
 ## Badges
@@ -357,20 +365,20 @@ These badges display a "trombinoscope" of the specified project team members. If
  * *Developers exist on the project team without pictures* : for each missing picture, a default "anonymous" picture is used
  * *No developer or team for the project* : A "missing person" picture is displayed
 
-### CI-LOOK related badges
-These badges provide general information about the running instance of ci-look
+### Panorama related badges
+These badges provide general information about the running instance of panorama
 
-**get /badges/server/version.svg** => Display the active ci-look backend version
+**get /badges/server/version.svg** => Display the active panorama backend version
 
 **Results :** 
  * *Current version* : ![Current version](docs/server-version.png?raw=true "Current version")
  
-**get /badges/server/project-count.svg** => Display the total number of distinct projects information managed in the running instance of ci-look. Ignore the versionned variants for the projects (if project "proj-test" exist in version "1.2.3" and "1.2.4", then only 1 instance of project is counted)
+**get /badges/server/project-count.svg** => Display the total number of distinct projects information managed in the running instance of panorama. Ignore the versionned variants for the projects (if project "proj-test" exist in version "1.2.3" and "1.2.4", then only 1 instance of project is counted)
 
 **Results :** 
  * *Current project count* : ![Current project count](docs/project-count.png?raw=true "Current project count")
  
-**get /badges/server/uptime.svg** => Display the uptime of the active ci-look instance
+**get /badges/server/uptime.svg** => Display the uptime of the active panorama instance
 
 **Results :** 
  * *Current uptime* : ![Current uptime](docs/uptime.png?raw=true "Current uptime")
@@ -399,7 +407,7 @@ TODO
 
 ## Standalone
 
-    java -jar ci-look-services-0.1.0.jar
+    java -jar panorama-services-0.1.0.jar
 
 ## Docker
 
