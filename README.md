@@ -2,7 +2,7 @@
 
 # panorama : a project CI information holder
 
-[![Travis CI Build Status](https://travis-ci.org/manuito/ci-look.svg)](https://travis-ci.org/manuito/ci-look)
+[![Travis CI Build Status](https://travis-ci.org/manuito/ci-panorama.svg)](https://travis-ci.org/manuito/ci-panorama)
 
 *This project is currently work in progress.*
 
