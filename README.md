@@ -33,7 +33,7 @@
 
 **Developers for a project ("picture badge")** :
 
-![Developers](docs/developers.png?raw=true "Developers")
+![Developers](docs/developers-compact.png?raw=true "Developers")
 
 **TODO : more to come, this project is currently work in progress**
 
@@ -356,15 +356,21 @@ For these 3 badges variants, only the fixed semver compliant version is displaye
 ### Developers - pictures of developers for a specified project
 These badges display a "trombinoscope" of the specified project team members. If the project is associated to a team, and if the developers of the team are specified and associated to pictures (all pictures are managed as uri-encoded BASE64 inline images), then an overview of up to 10 members of the team is displayed. 
 
-**get /badges/{projectCode}/released/developers.svg** => corresponding project team members pictures overview
+**get /badges/{projectCode}/released/developers-compact.svg** => corresponding project team members pictures overview, in a compact picture
 
 **Results :**
- * *Developers exist on the project team with pictures* : 
+ * *Developers who exist on the project team with pictures* : 
  
- ![Developers](docs/developers.png?raw=true "Developers")
+ ![Developers](docs/developers-compact.png?raw=true "Developers - Compact rendering")
  * *Developers exist on the project team without pictures* : for each missing picture, a default "anonymous" picture is used
  * *No developer or team for the project* : A "missing person" picture is displayed
+ * Badge is of a fixed size, and limited to 10 developer pictures, with a border
 
+**get /badges/{projectCode}/released/developers-inline.svg** => same as previous, in a large "inlined" display
+
+**Results :**
+ * Same as previous, without border, in one line of maximum 30 pictures
+ 
 ### Panorama related badges
 These badges provide general information about the running instance of panorama
 

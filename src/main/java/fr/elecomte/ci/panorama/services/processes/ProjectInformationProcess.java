@@ -189,6 +189,8 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		view.setInception(project.getInceptionDate());
 		view.setVersion(project.getVersion());
 		view.setLanguage(project.getLanguage());
+		view.setCreated(project.getInitTime());
+		view.setUpdated(project.getLastUpdateTime());
 
 		if (project.getTeam() != null) {
 			view.setTeam(viewFromTeam(project.getTeam()));
@@ -211,7 +213,7 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		project.setInceptionDate(view.getInception());
 		project.setVersion(view.getVersion());
 		project.setLanguage(view.getLanguage());
-		
+
 		if (view.getTeam() != null) {
 			project.setTeam(teamFromView(view.getTeam()));
 		}
@@ -251,7 +253,9 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 		view.setCompanyName(dev.getCompanyName());
 		view.setEmail(dev.getEmail());
 		view.setFullname(dev.getFullname());
-		view.setImageUrl(new String(dev.getImageUrl()));
+		if (dev.getImageUrl() != null) {
+			view.setImageUrl(new String(dev.getImageUrl()));
+		}
 		view.setTrigram(dev.getTrigram());
 
 		return view;

@@ -37,3 +37,7 @@ spring:
        
     jpa:
         show-sql: false
+
+server:
+    contextPath: 
+    port: 8080

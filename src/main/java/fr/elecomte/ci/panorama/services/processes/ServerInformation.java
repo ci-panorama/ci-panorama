@@ -27,6 +27,12 @@ public class ServerInformation implements ApplicationContextAware {
 	@Value("${panorama.version.codeName}")
 	private String codeName;
 
+	@Value("${server.contextPath}")
+	private String path;
+	
+	@Value("${server.port}")
+	private int port;
+	
 	public ServerInformation() {
 		super();
 	}
@@ -67,6 +73,20 @@ public class ServerInformation implements ApplicationContextAware {
 	 */
 	public String getCodeName() {
 		return this.codeName;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return this.path;
+	}
+
+	/**
+	 * @return the port
+	 */
+	public Integer getPort() {
+		return Integer.valueOf(this.port);
 	}
 
 	/**

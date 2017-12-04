@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016 Emmanuel Lecomte
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *  
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License. 
+ */
 package fr.elecomte.ci.panorama.services.demo;
 
 import java.time.LocalDateTime;
@@ -72,10 +87,13 @@ public class DemoDataLoader {
 			Tool grunt = tool("grunt", "1.0.4", ToolType.PRODUCTION_GRUNT);
 			Tool jenkins = tool("jenkins", "3.0.2", ToolType.CI_JENKINS);
 			Tool drone = tool("drone", "0.5.0", ToolType.CI_DRONE_IO);
+			Tool travis = tool("travis", "1.0.0", ToolType.CI_TRAVIS_CI);
+			Tool yarn = tool("yarn", "0.2.0", ToolType.PRODUCTION_YARN);
 
 			// Project 1
 
-			Project project1 = project("test", "Project test", "1.2.3", maven, "team", null);
+			Project project1 = project("pipeline-test", "A project for testing the CI pipeline with various data because why not", "1.2.3",
+					maven, "team", null);
 
 			project1.getTeam().getDevelopers()
 					.add(developer("ABC", "Milley Dupond", "mil@email.com", Resources.LOGO_ROOT + "/other/demo-1.png"));
@@ -97,6 +115,14 @@ public class DemoDataLoader {
 					.add(developer("ELE", "Yves Truis", "ytruis@test.com", Resources.LOGO_ROOT + "/other/demo-9.png"));
 			project1.getTeam().getDevelopers()
 					.add(developer("IBU", "Anna Paula", "anna@testtest.com", Resources.LOGO_ROOT + "/other/demo-10.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("IGG", "Georges Abitbol", "gg@testtest.com", Resources.LOGO_ROOT + "/other/demo-11.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("KAL", "Kalel Superman", "super@testtest.com", Resources.LOGO_ROOT + "/other/demo-12.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("BWA", "Bruce Wayne", "bruw@testtest.com", Resources.LOGO_ROOT + "/other/demo-13.png"));
+			project1.getTeam().getDevelopers()
+					.add(developer("ALA", "Laly Lalaly", "lllllaaallll@testtest.com", Resources.LOGO_ROOT + "/other/demo-14.png"));
 
 			this.teams.mergeWithExistingAndSave(project1.getTeam());
 			this.projects.mergeWithExistingAndSave(project1);
@@ -117,13 +143,14 @@ public class DemoDataLoader {
 			project1.getResults().add(releaseResult(jenkins, project1));
 
 			// Project 1 variations
-			this.projects.mergeWithExistingAndSave(project("test", null, "1.2.4", maven, null, null));
-			this.projects.mergeWithExistingAndSave(project("test", null, "2.0.0-alpha", maven, null, "java"));
-			this.projects.mergeWithExistingAndSave(project("test", null, "1.2.5", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("pipeline-test", null, "1.2.4", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("pipeline-test", null, "2.0.0-alpha", maven, null, "java"));
+			this.projects.mergeWithExistingAndSave(project("pipeline-test", null, "1.2.5", maven, null, null));
 
 			// Project 2
 
-			Project project2 = project("demo", null, "7.0.3", grunt, "The web dev warriors", "javascript");
+			Project project2 = project("my-demo-crm", "A CRM project with some data and fiew developers. Randal made it", "7.0.3", grunt,
+					"The web dev warriors", "javascript");
 
 			project2.getTeam().getDevelopers().add(developer("GGG", "Paul Altaruis", "popol@testemail.com", null));
 			project2.getTeam().getDevelopers().add(developer("BBB", "Lara Dupond", "abbbd@email.com", null));
@@ -138,8 +165,8 @@ public class DemoDataLoader {
 			project2.getResults().add(testResult(190, 10, 8, false, grunt, project2));
 			project2.getResults().add(testResult(200, 5, 5, false, grunt, project2));
 			project2.getResults().add(testResult(200, 10, 5, false, grunt, project2));
-			project2.getResults().add(testResult(210, 5, 0, true, grunt, project2));
-			project2.getResults().add(testResult(215, 5, 10, false, grunt, project2));
+			project2.getResults().add(testResult(210, 5, 0, true, yarn, project2));
+			project2.getResults().add(testResult(215, 5, 10, false, yarn, project2));
 			project2.getResults().add(testResult(215, 10, 5, false, grunt, project2));
 			project2.getResults().add(testResult(225, 5, 0, true, tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), project2));
 			project2.getResults().add(testResult(225, 5, 0, true, tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), project2));
@@ -149,9 +176,46 @@ public class DemoDataLoader {
 			project2.getResults().add(auditResult(73, 702, true, drone, project2));
 
 			// Project 2 variations
-			this.projects.mergeWithExistingAndSave(project("demo", null, "7.0.5", grunt, null, null));
+			this.projects.mergeWithExistingAndSave(project("my-demo-crm", null, "7.0.5", grunt, null, null));
 			this.projects.mergeWithExistingAndSave(
-					project("demo", null, "7.0.6", tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), null, null));
+					project("my-demo-crm", null, "7.0.6", tool("grunt", "1.0.10", ToolType.PRODUCTION_GRUNT), null, null));
+
+			// Project 3
+
+			Project project3 = project("acme-backend", null, "1.5.0-alpha.1", maven, "The winners", "Java");
+
+			project3.getTeam().getDevelopers().add(developer("ABC", "Leony Yonly", "eoyyy@yyyemail.com", null));
+			project3.getTeam().getDevelopers()
+					.add(developer("LLL", "Louis Louis", "lllloooolll@testemail.com", Resources.LOGO_ROOT + "/other/demo-13.png"));
+
+			this.teams.mergeWithExistingAndSave(project3.getTeam());
+			this.projects.mergeWithExistingAndSave(project3);
+
+			project3.getResults().add(auditResult(0, 1000, false, travis, project3));
+			project3.getResults().add(auditResult(0, 1050, false, travis, project3));
+			project3.getResults().add(auditResult(0, 1130, false, travis, project3));
+
+			// Project 3 variations
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.1", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.2", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.3", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.4", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.4.45", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-beta.1", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-beta.2", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.4.46", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.1-alpha.1", maven, null, null));
+
+			// Project 4
+
+			Project project4 = project("small-project", "Not a lot to see here", "1.0.0", yarn, "Small", "Node");
+
+			project4.getTeam().getDevelopers()
+					.add(developer("ELE", "Yves Truis", "ytruis@test.com", Resources.LOGO_ROOT + "/other/demo-9.png"));
+
+			this.teams.mergeWithExistingAndSave(project4.getTeam());
+			this.projects.mergeWithExistingAndSave(project4);
 		}
 	}
 
@@ -244,7 +308,7 @@ public class DemoDataLoader {
 
 		return this.results.save(result);
 	}
-	
+
 	/**
 	 * @param coverage
 	 * @param ncss

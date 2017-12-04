@@ -13,7 +13,7 @@ import fr.elecomte.ci.panorama.services.processes.ProcessException;
 
 /**
  * @author elecomte
- * @since 0.1.0
+ * @since v0.1.0
  */
 @RestController
 @RequestMapping(Constants.BADGES_ROOT)
@@ -126,10 +126,21 @@ public class BadgeSvgService {
 	 * @return
 	 * @throws ProcessException
 	 */
-	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/developers.svg", method = GET, produces = "image/svg+xml ")
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/developers-compact.svg", method = GET, produces = "image/svg+xml ")
 	@ResponseBody
-	public String developers(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
-		return this.badges.getProjectDevelopersBadge(projectCodeName, projectVersion);
+	public String developersCompact(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getProjectDevelopersCompactBadge(projectCodeName, projectVersion);
+	}
+
+	/**
+	 * @param record
+	 * @return
+	 * @throws ProcessException
+	 */
+	@RequestMapping(value = "/{projectCodeName}/{projectVersion}/developers-inline.svg", method = GET, produces = "image/svg+xml ")
+	@ResponseBody
+	public String developersInline(@PathVariable String projectCodeName, @PathVariable String projectVersion) throws ProcessException {
+		return this.badges.getProjectDevelopersInlineBadge(projectCodeName, projectVersion);
 	}
 
 	/**

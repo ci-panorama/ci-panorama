@@ -1,6 +1,7 @@
 package fr.elecomte.ci.panorama.services.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
@@ -41,6 +42,10 @@ public class ProjectView extends View {
 
 	@JsonInclude(Include.NON_EMPTY)
 	private TeamView team;
+
+	private LocalDateTime created;
+
+	private LocalDateTime updated;
 
 	/**
 	 * 
@@ -145,6 +150,36 @@ public class ProjectView extends View {
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the created
+	 */
+	public LocalDateTime getCreated() {
+		return this.created;
+	}
+
+	/**
+	 * @param created
+	 *            the created to set
+	 */
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
+
+	/**
+	 * @return the updated
+	 */
+	public LocalDateTime getUpdated() {
+		return this.updated;
+	}
+
+	/**
+	 * @param updated
+	 *            the updated to set
+	 */
+	public void setUpdated(LocalDateTime updated) {
+		this.updated = updated;
 	}
 
 }

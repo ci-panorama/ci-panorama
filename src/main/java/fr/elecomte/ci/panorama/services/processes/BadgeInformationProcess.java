@@ -195,9 +195,23 @@ public class BadgeInformationProcess {
 	 * @return
 	 * @throws ProcessException
 	 */
-	public String getProjectDevelopersBadge(String code, String version) throws ProcessException {
+	public String getProjectDevelopersCompactBadge(String code, String version) throws ProcessException {
 
-		return this.getCacheableProjectBadge(code, version, BadgeType.DEVELOPER_LIST, null,
+		return this.getCacheableProjectBadge(code, version, BadgeType.DEVELOPER_LIST_COMPACT, null,
+				proj -> (proj.getTeam() != null) ? proj.getTeam().getDevelopers() : null);
+	}
+
+	/**
+	 * Get a team overview, if any
+	 * 
+	 * @param code
+	 * @param version
+	 * @return
+	 * @throws ProcessException
+	 */
+	public String getProjectDevelopersInlineBadge(String code, String version) throws ProcessException {
+
+		return this.getCacheableProjectBadge(code, version, BadgeType.DEVELOPER_LIST_INLINE, null,
 				proj -> (proj.getTeam() != null) ? proj.getTeam().getDevelopers() : null);
 	}
 

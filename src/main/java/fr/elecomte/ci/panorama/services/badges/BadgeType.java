@@ -3,7 +3,8 @@ package fr.elecomte.ci.panorama.services.badges;
 import fr.elecomte.ci.panorama.services.badges.providers.AuditResultCoverageProvider;
 import fr.elecomte.ci.panorama.services.badges.providers.AuditResultNcssProvider;
 import fr.elecomte.ci.panorama.services.badges.providers.BadgeValueProvider;
-import fr.elecomte.ci.panorama.services.badges.providers.DeveloperListProvider;
+import fr.elecomte.ci.panorama.services.badges.providers.CompactDeveloperListProvider;
+import fr.elecomte.ci.panorama.services.badges.providers.InlineDeveloperListProvider;
 import fr.elecomte.ci.panorama.services.badges.providers.ProjectVersionProvider;
 import fr.elecomte.ci.panorama.services.badges.providers.ResultSuccessProvider;
 import fr.elecomte.ci.panorama.services.badges.providers.SimpleValueProvider;
@@ -33,7 +34,8 @@ public enum BadgeType {
 	SERVER_UPTIME("uptime.svg", new SimpleValueProvider()),
 	SERVER_PROJECT_COUNT("project-count.svg", new SimpleValueProvider()),
 	TOOL_LOGO("logo.svg", new ToolLogoProvider()),
-	DEVELOPER_LIST("developers.svg", new DeveloperListProvider()),
+	DEVELOPER_LIST_COMPACT("developers-compact.svg", new CompactDeveloperListProvider()),
+	DEVELOPER_LIST_INLINE("developers-inline.svg", new InlineDeveloperListProvider()),
 	AUDIT_COVERAGE("audit-coverage.svg", new AuditResultCoverageProvider()),
 	AUDIT_NCSS("audit-ncss.svg", new AuditResultNcssProvider()),
 	AUDIT("audit.svg", new ResultSuccessProvider());

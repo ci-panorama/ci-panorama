@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016 Emmanuel Lecomte
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *  
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License. 
+ */
 package fr.elecomte.ci.panorama;
 
 import java.sql.SQLException;
@@ -9,6 +24,7 @@ import org.h2.server.web.WebServer;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -47,6 +63,24 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * <pre>
+ *       ▄▄▄▄▀▀▀▀▀▀▀▀▄▄▄▄▄▄
+ *     █░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░▀▀▄
+ *    █░░░▒▒▒▒▒▒░░░░░░░░▒▒▒░░█
+ *   █░░░░░░▄██▀▄▄░░░░░▄▄▄░░░█
+ *  ▀▒▄▄▄▒░█▀▀▀▀▄▄█░░░██▄▄█░░░█
+ * █▒█▒▄░▀▄▄▄▀░░░░░░░░█░░░▒▒▒▒▒█
+ * █▒█░█▀▄▄░░░░░█▀░░░░▀▄░░▄▀▀▀▄▒█
+ *  █▀▄░█▄░█▀▄▄░▀░▀▀░▄▄▀░░░░█░░█
+ *   █░░▀▄▀█▄▄░█▀▀▀▄▄▄▄▀▀█▀██░█
+ *    █░░██░░▀█▄▄▄█▄▄█▄████░█
+ *     █░░░▀▀▄░█░░░█░███████░█
+ *      ▀▄░░░▀▀▄▄▄█▄█▄█▄█▄▀░░█
+ *        ▀▄▄░▒▒▒▒░░░░░░░░░░█
+ *          ▀▀▄▄░▒▒▒▒▒▒▒▒▒▒░█
+ *              ▀▄▄▄▄▄▄▄▄▄▄█
+ * </pre>
+ * 
  * @author elecomte
  * @since 0.1.0
  */
@@ -68,9 +102,11 @@ public class Service {
 
 		ServerInformation server = SpringApplication.run(Service.class, args).getBean(ServerInformation.class);
 
-		LOGGER.info("panorama v{} \"{}\", build {}", server.getVersion(), server.getCodeName(), server.getBuild());
+		LOGGER.info("panorama v{} \"{}\", build {}, started on http://localhost:{}/{}",
+				server.getVersion(), server.getCodeName(), server.getBuild(), server.getPort(), server.getPath());
 
-		System.out.println("\n___started______________________________________________________________________________________________________________\n");
+		System.out.println(
+				"\n___started______________________________________________________________________________________________________________\n");
 	}
 
 	/**
@@ -83,6 +119,9 @@ public class Service {
 		@Value("${panorama.badges-cache.type}")
 		private String badgesCacheType;
 
+		@Autowired
+		private ServerInformation server;
+
 		/* ######################### OPTIONS ######################### */
 
 		/**
@@ -91,7 +130,9 @@ public class Service {
 		@Bean
 		@ConditionalOnProperty(name = "panorama.options.swagger", havingValue = "true")
 		public Docket swaggerApi() {
-			LOGGER.info("SWAGGER UI activated");
+
+			LOGGER.info("SWAGGER UI activated for REST service testing on http://localhost:{}/{}swagger-ui.html", this.server.getPort(),
+					this.server.getPath());
 			return new Docket(DocumentationType.SWAGGER_2)
 					.select()
 					.apis(RequestHandlerSelectors.any())
@@ -108,7 +149,7 @@ public class Service {
 		@Bean(initMethod = "start", destroyMethod = "stop")
 		@ConditionalOnProperty(name = "panorama.options.h2console", havingValue = "true")
 		public Server h2WebConsole() throws SQLException {
-			LOGGER.info("H2 CONSOLE activated");
+			LOGGER.info("H2 CONSOLE activated on http://localhost:8082");
 			return new Server(new WebServer(), "-web", "-webAllowOthers", "-webPort", "8082");
 		}
 

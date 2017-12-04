@@ -22,14 +22,26 @@ public class DeveloperListProvider extends BadgeValueProvider<List<Developer>> {
 	private int imgBoxSize = 40;
 	private int startCorner = 5;
 	private int imgGridSpace = 1;
-	private int gridImgLineSize = 5;
-	private int maxCount = this.gridImgLineSize * 2;
+	private final int gridImgLineSize;
+	private final int maxCount;
 
 	private String noDeveloperPictoCache;
 	private String unknownDeveloperPictoCache;
 
 	private static final String NO_DEVELOPER_PICTO = Resources.LOGO_ROOT + "/other/developer-none.png";
 	private static final String UNKNOWN_DEVELOPER_PICTO = Resources.LOGO_ROOT + "/other/developer-unknown.png";
+
+	/**
+	 * @param gridImgLineSize
+	 *            : Max by line
+	 * @param maxCount
+	 *            : total Max (so line = maxCount/gridImgLineSize)
+	 */
+	protected DeveloperListProvider(int gridImgLineSize, int maxCount) {
+		super();
+		this.gridImgLineSize = gridImgLineSize;
+		this.maxCount = maxCount;
+	}
 
 	/**
 	 * @return
@@ -51,7 +63,7 @@ public class DeveloperListProvider extends BadgeValueProvider<List<Developer>> {
 		if (developers == null) {
 			return new BadgeValue(String.format(IMAGE_FORMAT, this.imgBoxSize,
 					this.imgBoxSize, this.startCorner, this.startCorner, getNoDeveloperPicto()),
-					BadgeColor.LIGHT_GREY);
+					BadgeColor.NONE);
 		}
 
 		List<String> images = developers.stream()
