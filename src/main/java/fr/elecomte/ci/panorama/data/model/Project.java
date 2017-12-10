@@ -32,9 +32,10 @@ import fr.elecomte.ci.panorama.data.model.Project.ProjectGroup;
 				name = "Project.findProjectGroups",
 				query = "select "
 						+ "pg.code_name as CODENAME, "
-						+ "pd.common_name as COMMONNAME, "
+						+ "pn.common_name as COMMONNAME, "
 						+ "pd.version as MAXVERSION, "
-						+ "pg.knew_versions_count as KNEWVERSIONSCOUNT "
+						+ "pg.knew_versions_count as KNEWVERSIONSCOUNT, "
+						+ "dc.dev_count as KNEWDEVSCOUNT "
 						+ "from ("
 						+ "	select "
 						+ "		code_name, "
@@ -42,7 +43,17 @@ import fr.elecomte.ci.panorama.data.model.Project.ProjectGroup;
 						+ "		count(id) as knew_versions_count "
 						+ "	from Project group by code_name"
 						+ ") pg "
-						+ "inner join Project pd on pd.code_name = pg.code_name and pd.semver_hash = pg.semver_hash",
+						+ "inner join Project pd on pd.code_name = pg.code_name and pd.semver_hash = pg.semver_hash "
+						+ "left outer join ( "
+						+ "	 select g.code_name, p.common_name from "
+						+ "		(select code_name, max(semver_hash) as sh from Project where common_name is not null group by code_name) g "
+						+ "     inner join Project p on p.semver_hash = g.sh "
+						+ ") pn on pn.code_name = pg.code_name "
+						+ "inner join (select count(*) as dev_count, p.code_name from Developer dev "
+						+ "inner join Team_Developers td on td.team_id = dev.id "
+						+ "inner join Project p on p.team_id = td.team_id "
+						+ " group by p.code_name "
+						+ ") dc on dc.code_name = pg.code_name",
 				resultClass = ProjectGroup.class,
 				resultSetMapping = "ProjectGroup"),
 
@@ -71,7 +82,8 @@ import fr.elecomte.ci.panorama.data.model.Project.ProjectGroup;
 								@ColumnResult(name = "CODENAME", type = String.class),
 								@ColumnResult(name = "COMMONNAME", type = String.class),
 								@ColumnResult(name = "MAXVERSION", type = String.class),
-								@ColumnResult(name = "KNEWVERSIONSCOUNT", type = Integer.class)
+								@ColumnResult(name = "KNEWVERSIONSCOUNT", type = Integer.class),
+								@ColumnResult(name = "KNEWDEVSCOUNT", type = Integer.class)
 						})
 		})
 })
@@ -230,12 +242,15 @@ public class Project extends LiveCiEntity {
 
 		private final Integer knewVersionsCount;
 
-		public ProjectGroup(String code, String name, String lastVersion, Integer knewVersionsCount) {
+		private final Integer knewDevelopersCount;
+
+		public ProjectGroup(String code, String name, String lastVersion, Integer knewVersionsCount, Integer knewDevelopersCount) {
 			super();
 			this.code = code;
 			this.name = name;
 			this.lastVersion = lastVersion;
 			this.knewVersionsCount = knewVersionsCount;
+			this.knewDevelopersCount = knewDevelopersCount;
 		}
 
 		/**
@@ -266,5 +281,11 @@ public class Project extends LiveCiEntity {
 			return this.knewVersionsCount;
 		}
 
+		/**
+		 * @return the knewDevelopersCount
+		 */
+		public Integer getKnewDevelopersCount() {
+			return this.knewDevelopersCount;
+		}
 	}
 }

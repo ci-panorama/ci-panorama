@@ -13,10 +13,16 @@ public class ProjectGroupView extends View {
 	private String code;
 
 	@JsonInclude(Include.ALWAYS)
+	private String name;
+
+	@JsonInclude(Include.ALWAYS)
 	private ProjectView last;
 
 	@JsonInclude(Include.ALWAYS)
 	private int knewVersionsCount;
+
+	@JsonInclude(Include.ALWAYS)
+	private int knewDevelopersCount;
 
 	/**
 	 * @return the last
@@ -33,7 +39,6 @@ public class ProjectGroupView extends View {
 		this.last = last;
 	}
 
-
 	/**
 	 * @return the code
 	 */
@@ -42,10 +47,26 @@ public class ProjectGroupView extends View {
 	}
 
 	/**
-	 * @param code the code to set
+	 * @param code
+	 *            the code to set
 	 */
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -61,5 +82,20 @@ public class ProjectGroupView extends View {
 	 */
 	public void setKnewVersionsCount(int knewVersionsCount) {
 		this.knewVersionsCount = knewVersionsCount;
+	}
+
+	/**
+	 * @return the knewDevelopersCount
+	 */
+	public int getKnewDevelopersCount() {
+		return this.knewDevelopersCount;
+	}
+
+	/**
+	 * @param knewDevelopersCount
+	 *            the knewDevelopersCount to set
+	 */
+	public void setKnewDevelopersCount(int knewDevelopersCount) {
+		this.knewDevelopersCount = knewDevelopersCount;
 	}
 }

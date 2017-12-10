@@ -170,7 +170,9 @@ public class ProjectInformationProcess extends AbstractRecordProcess {
 
 		view.setLast(new ProjectView(group.getName(), group.getLastVersion()));
 		view.setCode(group.getCode());
+		view.setName(group.getName());
 		view.setKnewVersionsCount(group.getKnewVersionsCount().intValue());
+		view.setKnewDevelopersCount(group.getKnewDevelopersCount().intValue());
 
 		return view;
 	}

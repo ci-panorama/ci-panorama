@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,8 @@ import fr.elecomte.ci.panorama.services.processes.SemverHashGenerator;
  * @since 0.1.0
  */
 public class DemoDataLoader {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataLoader.class);
 
 	@Autowired
 	private DeveloperRepository developers;
@@ -199,11 +203,12 @@ public class DemoDataLoader {
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.1", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.2", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.3", maven, null, null));
-			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-alpha.4", maven, null, null));
+			this.projects.mergeWithExistingAndSave(project("acme-backend", "One first specified name", "1.5.0-alpha.4", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.4.45", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-beta.1", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0-beta.2", maven, null, null));
-			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.4.46", maven, null, null));
+			this.projects.mergeWithExistingAndSave(
+					project("acme-backend", "One other specified name : project for ACME", "1.4.46", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.0", maven, null, null));
 			this.projects.mergeWithExistingAndSave(project("acme-backend", null, "1.5.1-alpha.1", maven, null, null));
 
@@ -216,7 +221,13 @@ public class DemoDataLoader {
 
 			this.teams.mergeWithExistingAndSave(project4.getTeam());
 			this.projects.mergeWithExistingAndSave(project4);
+
+			LOGGER.info("DEMO Data initialized for testing. Now {} project records are available, with {} tools and {} developers",
+					Long.valueOf(this.projects.count()),
+					Long.valueOf(this.tools.count()),
+					Long.valueOf(this.developers.count()));
 		}
+
 	}
 
 	/**
