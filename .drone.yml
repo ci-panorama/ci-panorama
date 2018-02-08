@@ -14,7 +14,7 @@ pipeline:
       - /opt/server/build:/root/.m2
     image: maven:3.3-jdk-8
     commands:
-      - mvn -q --batch-mode clean deploy
+      - mvn -q --batch-mode clean install
 
   # WILL REUSE CACHED DOCKER STORAGE FOR DOCKER BUILD
   rebuild_docker_cache:
