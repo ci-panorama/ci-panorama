@@ -1,0 +1,23 @@
+---
+## COMPLETE BUILD PROCESS
+pipeline:
+
+  # WILL USE CACHED DOCKER STORAGE FOR DOCKER BUILD
+  restore_docker_cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount: /drone/docker
+
+  # UPDATE MVN VERSION AND MVN DEPLOY FROM GIT TAG
+  common-mvn-build:
+    volumes:
+      - /opt/server/build:/root/.m2
+    image: maven:3.3-jdk-8
+    commands:
+      - mvn -q --batch-mode clean deploy
+
+  # WILL REUSE CACHED DOCKER STORAGE FOR DOCKER BUILD
+  rebuild_docker_cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount: /drone/docker

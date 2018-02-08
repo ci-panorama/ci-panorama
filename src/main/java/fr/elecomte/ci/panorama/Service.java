@@ -243,7 +243,7 @@ public class Service {
 		}
 	}
 
-	static interface Packages {
+	interface Packages {
 		String ROOT = "fr.elecomte.ci.panorama";
 		String JPA_REPOSITORIES = ROOT + ".data.repositories";
 		String JPA_ENTITIES = ROOT + ".data.model";
